@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">EwhaNoticeClient</string>
+    <string name="app_name">이화알리미</string>
+    <string name="default_notification_channel_id">공지사항</string>
+    <string name="notification_description">새로운 공지사항에 대한 알림을 전송합니다.</string>
 </resources>

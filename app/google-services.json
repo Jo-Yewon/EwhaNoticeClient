@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "914901863406",
+    "firebase_url": "https://ewhanotice.firebaseio.com",
+    "project_id": "ewhanotice",
+    "storage_bucket": "ewhanotice.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:914901863406:android:4323da14c2c0758c445cff",
+        "android_client_info": {
+          "package_name": "com.ake.ewhanoticeclient"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "914901863406-ao97lqldjo6tsmgqhmvpg3dmujhavlnm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCwGjTmP3LXOXEp5HLxrg_C_BqmypNCpg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "914901863406-ao97lqldjo6tsmgqhmvpg3dmujhavlnm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
