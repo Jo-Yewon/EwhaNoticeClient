@@ -7,8 +7,10 @@ import com.ake.ewhanoticeclient.R
 import com.ake.ewhanoticeclient.database.Board
 import kotlinx.android.synthetic.main.board_item.view.*
 
-class BoardAdapter(private val boardData: List<Board>):
+class BoardAdapter(private val boardData: MutableList<Board>):
         RecyclerView.Adapter<BoardAdapter.BoardViewHolder>(){
+
+    lateinit var seletedBoardAdapter: SelectedBoardAdapter
 
     class BoardViewHolder(parent: ViewGroup):
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.board_item, parent, false)){
@@ -20,7 +22,21 @@ class BoardAdapter(private val boardData: List<Board>):
 
     override fun onBindViewHolder(holder: BoardViewHolder, position: Int) {
         holder.title.text = boardData[position].title
+        holder.itemView.setOnClickListener{
+            seletedBoardAdapter.addItem(boardData[position])
+            deleteItem(position)
+        }
     }
 
     override fun getItemCount() = boardData.size
+
+    fun addItem(board: Board){
+        boardData.add(board)
+        notifyItemInserted(itemCount-1)
+    }
+
+    private fun deleteItem(position: Int){
+        boardData.removeAt(position)
+        notifyDataSetChanged()
+    }
 }

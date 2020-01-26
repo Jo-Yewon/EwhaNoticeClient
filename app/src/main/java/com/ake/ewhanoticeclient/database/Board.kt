@@ -3,6 +3,7 @@ package com.ake.ewhanoticeclient.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.*
 
 @Entity(tableName = "board_table")
 data class Board(
@@ -14,7 +15,14 @@ data class Board(
     @ColumnInfo(name = "board_category")
     val boardCategory: String,
 
-    val title: String,
+    val title: String
+){
+    override fun toString() = boardCategory + "," + Integer.toString(boardId) + "," + title
 
-    val description: String
-)
+    companion object{
+        fun getBoardFromString(boardString:String): Board{
+            val st = StringTokenizer(boardString, ",")
+            return Board(Integer.parseInt(st.nextToken()), st.nextToken(), st.nextToken())
+        }
+    }
+}
