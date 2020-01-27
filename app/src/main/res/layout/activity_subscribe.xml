@@ -3,10 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.ake.ewhanoticeclient.activity_subscribe.SubscribeViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.SubscribeActivity">
+        tools:context=".activity_subscribe.SubscribeActivity">
 
         <LinearLayout
             android:id="@+id/linear_layout"
@@ -41,23 +47,25 @@
                 </TextView>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/selected_board_list"
+                    android:id="@+id/subscribed_board_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
                     tools:visibility= "visible"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintTop_toBottomOf="@+id/textView" />
 
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/board_list"
+                android:id="@+id/unsubscribed_board_list"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="20dp"
                 app:layout_constraintBottom_toTopOf="@+id/button_submit"
-                app:layout_constraintTop_toBottomOf="@+id/linear_layout" />
+                app:layout_constraintTop_toBottomOf="@+id/linear_layout"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         </LinearLayout>
 

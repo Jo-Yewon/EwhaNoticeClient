@@ -16,7 +16,8 @@ data class Board(
     val boardCategory: String,
 
     val title: String
-){
+): Comparable<Board>{
+
     override fun toString() = boardCategory + "," + Integer.toString(boardId) + "," + title
 
     companion object{
@@ -24,5 +25,9 @@ data class Board(
             val st = StringTokenizer(boardString, ",")
             return Board(Integer.parseInt(st.nextToken()), st.nextToken(), st.nextToken())
         }
+    }
+
+    override fun compareTo(other: Board): Int {
+        return boardId - other.boardId
     }
 }
