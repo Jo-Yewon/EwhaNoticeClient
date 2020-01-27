@@ -1,4 +1,4 @@
-package com.ake.ewhanoticeclient.ui.main
+package com.ake.ewhanoticeclient.activity_main
 
 import android.os.Bundle
 import android.view.LayoutInflater

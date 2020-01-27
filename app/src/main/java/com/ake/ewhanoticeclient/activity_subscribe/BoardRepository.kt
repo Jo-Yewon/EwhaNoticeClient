@@ -1,7 +1,6 @@
 package com.ake.ewhanoticeclient.activity_subscribe
 
 import android.content.SharedPreferences
-import androidx.lifecycle.MutableLiveData
 import com.ake.ewhanoticeclient.database.Board
 import com.ake.ewhanoticeclient.database.BoardDatabaseDao
 import kotlinx.coroutines.Dispatchers

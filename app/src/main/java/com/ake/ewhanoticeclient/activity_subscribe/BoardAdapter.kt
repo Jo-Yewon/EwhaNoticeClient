@@ -39,7 +39,6 @@ class BoardAdapter(val clickListener: BoardListener):
         fun bind(item: Board, res: Resources, clickListener: BoardListener){
             binding.board = item
             binding.clickListener = clickListener
-            binding.executePendingBindings()
         }
 
         companion object{
@@ -53,7 +52,7 @@ class BoardAdapter(val clickListener: BoardListener):
         }
     }
 
-    class BoardListener(val clickListener: (boardId: Int) -> Unit){
-        fun onClick(board: Board) = clickListener(board.boardId)
+    class BoardListener(val clickListener: (board: Board) -> Unit){
+        fun onClick(board: Board) = clickListener(board)
     }
 }

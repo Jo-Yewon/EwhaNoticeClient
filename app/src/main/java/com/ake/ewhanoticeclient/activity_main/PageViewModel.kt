@@ -1,4 +1,4 @@
-package com.ake.ewhanoticeclient.ui.main
+package com.ake.ewhanoticeclient.activity_main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

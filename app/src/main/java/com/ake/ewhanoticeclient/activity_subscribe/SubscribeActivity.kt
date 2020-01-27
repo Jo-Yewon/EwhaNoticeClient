@@ -20,16 +20,15 @@ class SubscribeActivity : AppCompatActivity() {
 
         val dao = BoardDatabase.getInstance(application).BoardDatabaseDao
         val sharedPreferences = getSharedPreferences(
-            BoardRepository.PREFERENCES_NAME, Context.MODE_PRIVATE
-        )
+            BoardRepository.PREFERENCES_NAME, Context.MODE_PRIVATE)
         val repository = BoardRepository.getInstance(dao, sharedPreferences)
         val factory = SubscribeViewModelFactory(repository)
         var viewModel = ViewModelProviders.of(this, factory)
             .get(SubscribeViewModel::class.java)
 
         val subscribedBoardsListAdapter = BoardAdapter(
-            BoardAdapter.BoardListener { boardId ->
-                viewModel.unsubscribeBoard(boardId)
+            BoardAdapter.BoardListener { board ->
+                viewModel.unsubscribeBoard(board)
             })
         binding.subscribedBoardList.adapter = subscribedBoardsListAdapter
         viewModel.subscribedBoards.observe(this, Observer {
@@ -37,8 +36,8 @@ class SubscribeActivity : AppCompatActivity() {
         })
 
         val unsubscribedBoardsListAdapter = BoardAdapter(
-            BoardAdapter.BoardListener { boardId ->
-                viewModel.subscribeBoard(boardId)
+            BoardAdapter.BoardListener { board ->
+                viewModel.subscribeBoard(board)
             })
         binding.unsubscribedBoardList.adapter = unsubscribedBoardsListAdapter
         viewModel.unsubscribedBoards.observe(this, Observer {
