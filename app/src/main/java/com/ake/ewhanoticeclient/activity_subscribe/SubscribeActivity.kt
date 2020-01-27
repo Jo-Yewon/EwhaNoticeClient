@@ -26,8 +26,8 @@ class SubscribeActivity : AppCompatActivity() {
         var viewModel = ViewModelProviders.of(this, factory)
             .get(SubscribeViewModel::class.java)
 
-        val subscribedBoardsListAdapter = BoardAdapter(
-            BoardAdapter.BoardListener { board ->
+        val subscribedBoardsListAdapter = SubscribedBoardAdapter(
+            SubscribedBoardAdapter.SubscribedBoardListener { board ->
                 viewModel.unsubscribeBoard(board)
             })
         binding.subscribedBoardList.adapter = subscribedBoardsListAdapter
