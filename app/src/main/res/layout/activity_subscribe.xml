@@ -16,7 +16,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/colorPrimaryDark"
-            app:cardCornerRadius="30dp"
+            app:cardCornerRadius="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -60,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="20dp"
+                    android:layout_margin="10dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -89,12 +89,30 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/topCardView">
 
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/search_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                app:strokeColor="@color/colorPrimaryDark"
+                app:strokeWidth="1dp"
+                android:layout_margin="10dp">
+
+                <SearchView
+                    android:id="@+id/search_view_board"
+                    android:theme="@style/AppSearchView"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:queryHint="게시판 이름을 입력하세요" />
+
+            </com.google.android.material.card.MaterialCardView>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/unsubscribed_board_list"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_margin="20dp"
                 android:layout_weight="1"
+                android:layout_marginHorizontal="20dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

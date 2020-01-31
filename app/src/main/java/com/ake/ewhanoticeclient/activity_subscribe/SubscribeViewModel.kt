@@ -1,5 +1,6 @@
 package com.ake.ewhanoticeclient.activity_subscribe
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,9 +18,9 @@ class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() 
     val subscribedBoards: LiveData<List<Board>>
         get() = _subscribedBoards
 
-    private var _unsubscribedBoards = MutableLiveData<List<Board>>()
-    val unsubscribedBoards: LiveData<List<Board>>
-        get() = _unsubscribedBoards
+    private var _bottomBoards = MutableLiveData<List<Board>>()
+    val bottomBoards: LiveData<List<Board>>
+        get() = _bottomBoards
 
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -27,15 +28,17 @@ class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() 
     val isSubscribedBoard = Transformations.map(subscribedBoards){
         if (it.isEmpty()) View.GONE else View.VISIBLE }
 
+    private lateinit var allBoards: List<Board>
+
     init {
-        _subscribedBoards.value = listOf()
         initBoards()
     }
 
     private fun initBoards() {
         uiScope.launch {
             _subscribedBoards.value = repository.getSubscribedBoardList()
-            _unsubscribedBoards.value = repository.getBoardsFromDatabase()
+            allBoards = repository.getBoardsFromDatabase()
+            _bottomBoards.value = allBoards
         }
     }
 
@@ -50,10 +53,12 @@ class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() 
     }
 
     fun subscribeBoard(board: Board) {
-        _subscribedBoards.value =
-            if (_subscribedBoards.value?.size == 0)
-                mutableListOf(board)
-            else {
+        when(_subscribedBoards.value?.size){
+            0 -> _subscribedBoards.value = mutableListOf(board)
+            5 -> {
+                //TODO 5개 이상 구독할 수 없다고 알려주어야 해요
+                Log.d("subscribe", "wait")}
+            else -> {
                 val subscribedBoards = (_subscribedBoards.value as MutableList).toMutableList()
                 for (existedBoard in subscribedBoards)
                     if (existedBoard.boardId == board.boardId) {
@@ -61,8 +66,22 @@ class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() 
                         return
                     }
                 subscribedBoards.add(board)
-                subscribedBoards
+                _subscribedBoards.value = subscribedBoards
             }
+        }
+    }
+
+    fun searchBoardByKeyword(keyword: String?){
+        uiScope.launch {
+            when(keyword){
+                null -> closeSearch()
+                else -> _bottomBoards.value = repository.searchBoardsFromDatabase(keyword)
+            }
+        }
+    }
+
+    fun closeSearch(){
+        _bottomBoards.value = allBoards
     }
 
     fun clickConfirm() {
