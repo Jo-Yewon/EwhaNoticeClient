@@ -27,10 +27,10 @@ class BoardRepository private constructor(
     fun setSubscribedBoardList(boards: List<Board>) {
         var boardsString = ""
         for (board in boards)
-            boardsString += board.toString()
+            boardsString += "${board}/"
 
         val editor = sharedPreferences.edit()
-        editor.putString(KEY, boardsString)
+        editor.putString(KEY, boardsString.removeSuffix("/"))
         editor.commit()
     }
 
@@ -40,9 +40,11 @@ class BoardRepository private constructor(
             null -> listOf()
             else -> {
                 val list = mutableListOf<Board>()
-                val st = StringTokenizer(boardsString, ",")
+                val st = StringTokenizer(boardsString, "/")
                 while (st.hasMoreTokens())
-                    list.add(Board.getBoardFromString(st.nextToken()))
+                    with(st.nextToken()){
+                        if (this.isNotEmpty()) list.add(Board.getBoardFromString(this))
+                    }
                 list
             }
         }
