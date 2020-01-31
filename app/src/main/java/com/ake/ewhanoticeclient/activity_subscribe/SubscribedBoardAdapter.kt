@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ake.ewhanoticeclient.database.Board
 import com.ake.ewhanoticeclient.databinding.SubscribedBoardItemBinding
 
-class SubscribedBoardAdapter(val clickListener: SubscribedBoardListener):
+class SubscribedBoardAdapter(private val clickListener: BoardClickListener) :
     ListAdapter<Board, SubscribedBoardAdapter.SubscribedBoardViewHolder>(SubscribedBoardDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubscribedBoardViewHolder =
@@ -23,7 +23,7 @@ class SubscribedBoardAdapter(val clickListener: SubscribedBoardListener):
         holder.bind(item, res, clickListener)
     }
 
-    class SubscribedBoardDiffCallback : DiffUtil.ItemCallback<Board>(){
+    class SubscribedBoardDiffCallback : DiffUtil.ItemCallback<Board>() {
         override fun areContentsTheSame(oldItem: Board, newItem: Board): Boolean {
             return oldItem == newItem
         }
@@ -34,23 +34,20 @@ class SubscribedBoardAdapter(val clickListener: SubscribedBoardListener):
     }
 
     class SubscribedBoardViewHolder(val binding: SubscribedBoardItemBinding) :
-        RecyclerView.ViewHolder(binding.root){
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Board, res: Resources, clickListener: SubscribedBoardListener){
+        fun bind(item: Board, res: Resources, clickListener: BoardClickListener) {
             binding.board = item
             binding.clickListener = clickListener
         }
 
-        companion object{
+        companion object {
             fun from(parent: ViewGroup): SubscribedBoardViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = SubscribedBoardItemBinding.inflate(layoutInflater)
+                val binding = SubscribedBoardItemBinding
+                    .inflate(layoutInflater, parent, false)
                 return SubscribedBoardViewHolder(binding)
             }
         }
-    }
-
-    class SubscribedBoardListener(val clickListener: (board: Board) -> Unit){
-        fun onClick(board: Board) = clickListener(board)
     }
 }

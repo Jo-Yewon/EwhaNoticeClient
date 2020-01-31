@@ -36,7 +36,6 @@ class BoardRepository private constructor(
 
     fun getSubscribedBoardList(): List<Board> {
         val boardsString = sharedPreferences.getString(KEY, null)
-
         return when (boardsString) {
             null -> listOf()
             else -> {
@@ -49,27 +48,9 @@ class BoardRepository private constructor(
         }
     }
 
-    suspend fun getUnsubscribedBoardsFromDatabase(): List<Board>{
+    suspend fun getBoardsFromDatabase(): List<Board>{
         return withContext(Dispatchers.IO){
-            val subscribedBoards = getSubscribedBoardList()
-            val unsubscribedBoards = boardDatabase.getAllBoards()
-
-            if (subscribedBoards != null) {
-                unsubscribedBoards.filter {
-                    for (subscribedBoard in subscribedBoards)
-                        if (subscribedBoard.boardId == it.boardId)
-                            false
-                    true
-                }
-            }
-            unsubscribedBoards
+            boardDatabase.getAllBoards()
         }
     }
-
-    suspend fun getBoardFromDatabase(boardId:Int): Board{
-        return withContext(Dispatchers.IO){
-            boardDatabase.getBoard(boardId)
-        }
-    }
-
 }

@@ -26,8 +26,12 @@ class SubscribeActivity : AppCompatActivity() {
         var viewModel = ViewModelProviders.of(this, factory)
             .get(SubscribeViewModel::class.java)
 
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+
+        // SubscribedBoardList
         val subscribedBoardsListAdapter = SubscribedBoardAdapter(
-            SubscribedBoardAdapter.SubscribedBoardListener { board ->
+            BoardClickListener { board ->
                 viewModel.unsubscribeBoard(board)
             })
         binding.subscribedBoardList.adapter = subscribedBoardsListAdapter
@@ -35,16 +39,15 @@ class SubscribeActivity : AppCompatActivity() {
             it?.let { subscribedBoardsListAdapter.submitList(it) }
         })
 
+        //BoardList
         val unsubscribedBoardsListAdapter = BoardAdapter(
-            BoardAdapter.BoardListener { board ->
+            BoardClickListener { board ->
                 viewModel.subscribeBoard(board)
             })
         binding.unsubscribedBoardList.adapter = unsubscribedBoardsListAdapter
         viewModel.unsubscribedBoards.observe(this, Observer {
             it?.let { unsubscribedBoardsListAdapter.submitList(it) }
         })
-
-        binding.lifecycleOwner = this
     }
 
     private fun startLoad() {

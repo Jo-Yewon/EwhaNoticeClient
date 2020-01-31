@@ -9,13 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ake.ewhanoticeclient.database.Board
 import com.ake.ewhanoticeclient.databinding.BoardItemBinding
 
-class BoardAdapter(val clickListener: BoardListener):
+class BoardAdapter(val clickListener: BoardClickListener):
     ListAdapter<Board, BoardAdapter.BoardViewHolder>(BoardDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BoardViewHolder =
-        BoardViewHolder.from(
-            parent
-        )
+        BoardViewHolder.from(parent)
 
     override fun onBindViewHolder(holder: BoardViewHolder, position: Int) {
         val res = holder.itemView.context.resources
@@ -33,10 +31,10 @@ class BoardAdapter(val clickListener: BoardListener):
         }
     }
 
-    class BoardViewHolder(val binding: BoardItemBinding) :
+    class BoardViewHolder(private val binding: BoardItemBinding) :
         RecyclerView.ViewHolder(binding.root){
 
-        fun bind(item: Board, res: Resources, clickListener: BoardListener){
+        fun bind(item: Board, res: Resources, clickListener: BoardClickListener){
             binding.board = item
             binding.clickListener = clickListener
         }
@@ -44,15 +42,12 @@ class BoardAdapter(val clickListener: BoardListener):
         companion object{
             fun from(parent: ViewGroup): BoardViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = BoardItemBinding.inflate(layoutInflater)
+                val binding = BoardItemBinding
+                    .inflate(layoutInflater, parent, false)
                 return BoardViewHolder(
                     binding
                 )
             }
         }
-    }
-
-    class BoardListener(val clickListener: (board: Board) -> Unit){
-        fun onClick(board: Board) = clickListener(board)
     }
 }

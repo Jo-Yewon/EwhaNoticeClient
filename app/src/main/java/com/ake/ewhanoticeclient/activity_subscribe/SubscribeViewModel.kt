@@ -1,6 +1,6 @@
 package com.ake.ewhanoticeclient.activity_subscribe
 
-import android.util.Log
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -24,39 +24,42 @@ class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() 
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    val descriptionVisible = Transformations.map(subscribedBoards) { it.isEmpty() }
+    val isSubscribedBoard = Transformations.map(subscribedBoards){
+        if (it.isEmpty()) View.GONE else View.VISIBLE }
 
     init {
+        _subscribedBoards.value = listOf()
         initBoards()
     }
 
     private fun initBoards() {
         uiScope.launch {
             _subscribedBoards.value = repository.getSubscribedBoardList()
-            _unsubscribedBoards.value = repository.getUnsubscribedBoardsFromDatabase()
+            _unsubscribedBoards.value = repository.getBoardsFromDatabase()
         }
     }
 
     fun unsubscribeBoard(board: Board) {
-        var subscribedBoards = _subscribedBoards.value as MutableList
-        subscribedBoards.remove(board)
+        var subscribedBoards = (_subscribedBoards.value as MutableList).toMutableList()
+        for (i in 0 until subscribedBoards.size)
+            if (subscribedBoards[i].boardId == board.boardId) {
+                subscribedBoards.removeAt(i)
+                break
+            }
         _subscribedBoards.value = subscribedBoards
-
-        var unsubscribedBoards = _unsubscribedBoards.value as MutableList
-        unsubscribedBoards.add(board)
-        _unsubscribedBoards.value = unsubscribedBoards
     }
 
     fun subscribeBoard(board: Board) {
-        var unsubscribedBoards = _unsubscribedBoards.value as MutableList
-        unsubscribedBoards.remove(board)
-        _unsubscribedBoards.value = unsubscribedBoards
-
         _subscribedBoards.value =
             if (_subscribedBoards.value?.size == 0)
                 mutableListOf(board)
             else {
-                val subscribedBoards = _subscribedBoards.value as MutableList
+                val subscribedBoards = (_subscribedBoards.value as MutableList).toMutableList()
+                for (existedBoard in subscribedBoards)
+                    if (existedBoard.boardId == board.boardId) {
+                        //TODO 이미 구독된 게시판이라고 알려주어야 해요
+                        return
+                    }
                 subscribedBoards.add(board)
                 subscribedBoards
             }
