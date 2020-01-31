@@ -1,6 +1,7 @@
 package com.ake.ewhanoticeclient.activity_subscribe
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.SearchView
@@ -8,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.ake.ewhanoticeclient.R
+import com.ake.ewhanoticeclient.activity_main.MainActivity
 import com.ake.ewhanoticeclient.database.BoardDatabase
 import com.ake.ewhanoticeclient.databinding.ActivitySubscribeBinding
 
@@ -51,11 +53,18 @@ class SubscribeActivity : AppCompatActivity() {
         })
 
         //Search
-        binding.searchViewBoard.setOnQueryTextListener(BoardOnQueryTextListener(viewModel))
-        binding.searchViewBoard.setOnCloseListener {
-            viewModel.closeSearch()
-            true
+        binding.searchViewBoard.apply {
+            setOnQueryTextListener(BoardOnQueryTextListener(viewModel))
+            setOnCloseListener {
+                viewModel.closeSearch()
+                true
+            }
         }
+
+        //Navigate
+        viewModel.navigateToMainActivity.observe(this, Observer {
+            if (it) startActivity(Intent(this, MainActivity::class.java))
+        })
     }
 
     class BoardOnQueryTextListener(private val viewModel: SubscribeViewModel) :

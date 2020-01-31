@@ -15,15 +15,17 @@ data class Board(
     @ColumnInfo(name = "board_category")
     val boardCategory: String,
 
-    val title: String
+    val title: String,
+
+    val alias: String
 ): Comparable<Board>{
 
-    override fun toString() = boardCategory + "," + Integer.toString(boardId) + "," + title
+    override fun toString() = boardCategory + "," + Integer.toString(boardId) + "," + title + "," + alias
 
     companion object{
         fun getBoardFromString(boardString:String): Board{
             val st = StringTokenizer(boardString, ",")
-            return Board(Integer.parseInt(st.nextToken()), st.nextToken(), st.nextToken())
+            return Board(Integer.parseInt(st.nextToken()), st.nextToken(), st.nextToken(), st.nextToken())
         }
     }
 

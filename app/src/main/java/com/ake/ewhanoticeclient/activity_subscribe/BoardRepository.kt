@@ -24,7 +24,7 @@ class BoardRepository private constructor(
         private const val KEY = "subscription"
     }
 
-    fun setSubscribedBoardList(boards: MutableList<Board>) {
+    fun setSubscribedBoardList(boards: List<Board>) {
         var boardsString = ""
         for (board in boards)
             boardsString += board.toString()

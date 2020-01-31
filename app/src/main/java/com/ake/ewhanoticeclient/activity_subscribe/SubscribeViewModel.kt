@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.ake.ewhanoticeclient.database.Board
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -28,9 +29,14 @@ class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() 
     val isSubscribedBoard = Transformations.map(subscribedBoards){
         if (it.isEmpty()) View.GONE else View.VISIBLE }
 
+    private val _navigateToMainActivity = MutableLiveData<Boolean>()
+    val navigateToMainActivity: LiveData<Boolean>
+        get() = _navigateToMainActivity
+
     private lateinit var allBoards: List<Board>
 
     init {
+        _navigateToMainActivity.value = false
         initBoards()
     }
 
@@ -85,6 +91,20 @@ class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() 
     }
 
     fun clickConfirm() {
-        //TODO
+        subscribeBoards()
+        _navigateToMainActivity.value = true
+    }
+
+    private fun subscribeBoards(){
+        val preSubscribedBoards = repository.getSubscribedBoardList()
+
+        FirebaseMessaging.getInstance().apply {
+            for(preBoard in preSubscribedBoards)
+                this.unsubscribeFromTopic(preBoard.boardCategory)
+            for(board in _subscribedBoards.value!!)
+                this.subscribeToTopic(board.boardCategory)
+        }
+
+        repository.setSubscribedBoardList(_subscribedBoards.value!!)
     }
 }
