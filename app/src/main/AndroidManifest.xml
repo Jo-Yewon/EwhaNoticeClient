@@ -2,6 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ake.ewhanoticeclient">
 
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- <meta-data -->
+    <!-- android:name="com.google.firebase.messaging.default_notification_icon" -->
+    <!-- android:resource="@drawable/ic_stat_ic_notification" /> -->
+    <meta-data
+        android:name="com.google.firebase.messaging.default_notification_color"
+        android:resource="@color/colorAccent" />
+    <meta-data
+        android:name="com.google.firebase.messaging.default_notification_channel_id"
+        android:value="@string/default_notification_channel_id" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -10,6 +20,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity_subscribe.SubscribeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".messaging.NoticeService"
@@ -19,25 +36,7 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".view.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".activity_main.MainActivity" />
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-
-<!--    <meta-data-->
-<!--        android:name="com.google.firebase.messaging.default_notification_icon"-->
-<!--        android:resource="@drawable/ic_stat_ic_notification" />-->
-    <meta-data
-        android:name="com.google.firebase.messaging.default_notification_color"
-        android:resource="@color/colorAccent" />
-    <meta-data
-        android:name="com.google.firebase.messaging.default_notification_channel_id"
-        android:value="@string/default_notification_channel_id" />
 
 </manifest>
