@@ -33,7 +33,7 @@ class SubscribedBoardAdapter(private val clickListener: BoardClickListener) :
         }
     }
 
-    class SubscribedBoardViewHolder(val binding: SubscribedBoardItemBinding) :
+    class SubscribedBoardViewHolder(private val binding: SubscribedBoardItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Board, res: Resources, clickListener: BoardClickListener) {
