@@ -33,7 +33,7 @@ class SubscribeActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         // SubscribedBoardList
-        val subscribedBoardsListAdapter = SubscribedBoardAdapter(
+        val subscribedBoardsListAdapter = SubscribedBoardsAdapter(
             BoardClickListener { board ->
                 viewModel.unsubscribeBoard(board)
             })
@@ -43,7 +43,7 @@ class SubscribeActivity : AppCompatActivity() {
         })
 
         //BoardList
-        val unsubscribedBoardsListAdapter = BoardAdapter(
+        val unsubscribedBoardsListAdapter = BottomBoardsAdapter(
             BoardClickListener { board ->
                 viewModel.subscribeBoard(board)
             })

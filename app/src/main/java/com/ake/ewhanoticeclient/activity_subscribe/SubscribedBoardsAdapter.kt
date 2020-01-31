@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ake.ewhanoticeclient.database.Board
 import com.ake.ewhanoticeclient.databinding.SubscribedBoardItemBinding
 
-class SubscribedBoardAdapter(private val clickListener: BoardClickListener) :
-    ListAdapter<Board, SubscribedBoardAdapter.SubscribedBoardViewHolder>(SubscribedBoardDiffCallback()) {
+class SubscribedBoardsAdapter(private val clickListener: BoardClickListener) :
+    ListAdapter<Board, SubscribedBoardsAdapter.SubscribedBoardViewHolder>(SubscribedBoardDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubscribedBoardViewHolder =
         SubscribedBoardViewHolder.from(
