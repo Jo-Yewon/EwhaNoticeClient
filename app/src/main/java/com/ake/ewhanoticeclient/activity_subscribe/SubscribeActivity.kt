@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.ake.ewhanoticeclient.R
 import com.ake.ewhanoticeclient.activity_main.MainActivity
 import com.ake.ewhanoticeclient.database.BoardDatabase
+import com.ake.ewhanoticeclient.database.BoardRepository
 import com.ake.ewhanoticeclient.databinding.ActivitySubscribeBinding
 
 class SubscribeActivity : AppCompatActivity() {

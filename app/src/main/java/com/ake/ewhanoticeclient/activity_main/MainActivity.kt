@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.ake.ewhanoticeclient.R
 import com.ake.ewhanoticeclient.databinding.ActivityMainBinding
-import com.ake.ewhanoticeclient.activity_main.SectionsPagerAdapter
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,10 +17,7 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
 
-        val sectionsPagerAdapter = SectionsPagerAdapter(
-            this,
-            supportFragmentManager
-        )
+        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
         binding.viewPager.adapter = sectionsPagerAdapter
 
         binding.tabs.setupWithViewPager(binding.viewPager)

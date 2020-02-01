@@ -51,11 +51,12 @@ dependencies {
 
     // aac
     implementation "androidx.lifecycle:lifecycle-extensions:${lifecycle_version}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycle_version}"
 
     //retrofit
     implementation "com.squareup.retrofit2:retrofit:${retrofit_version}"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:${retrofit_version}"
     implementation "com.squareup.retrofit2:converter-gson:${retrofit_version}"
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.3.1'
 
     //Room
     implementation "androidx.room:room-runtime:$room_version"
@@ -64,4 +65,7 @@ dependencies {
     //Coroutine
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
+
+    //Paging
+    implementation "androidx.paging:paging-runtime:$paging_version"
 }

@@ -2,16 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ake.ewhanoticeclient">
 
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- <meta-data -->
-    <!-- android:name="com.google.firebase.messaging.default_notification_icon" -->
-    <!-- android:resource="@drawable/ic_stat_ic_notification" /> -->
-    <meta-data
-        android:name="com.google.firebase.messaging.default_notification_color"
-        android:resource="@color/colorAccent" />
-    <meta-data
-        android:name="com.google.firebase.messaging.default_notification_channel_id"
-        android:value="@string/default_notification_channel_id" />
-
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -38,5 +28,16 @@
 
         <activity android:name=".activity_main.MainActivity" />
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- <meta-data -->
+    <!-- android:name="com.google.firebase.messaging.default_notification_icon" -->
+    <!-- android:resource="@drawable/ic_stat_ic_notification" /> -->
+    <meta-data
+        android:name="com.google.firebase.messaging.default_notification_color"
+        android:resource="@color/colorAccent" />
+    <meta-data
+        android:name="com.google.firebase.messaging.default_notification_channel_id"
+        android:value="@string/default_notification_channel_id" />
 
 </manifest>

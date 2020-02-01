@@ -2,11 +2,9 @@ package com.ake.ewhanoticeclient.activity_subscribe
 
 import android.util.Log
 import android.view.View
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.ake.ewhanoticeclient.database.Board
+import com.ake.ewhanoticeclient.database.BoardRepository
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,8 +21,8 @@ class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() 
     val bottomBoards: LiveData<List<Board>>
         get() = _bottomBoards
 
-    private var viewModelJob = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+//    private var viewModelJob = Job()
+//    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     val isSubscribedBoard = Transformations.map(subscribedBoards){
         if (it.isEmpty()) View.GONE else View.VISIBLE }
@@ -41,7 +39,7 @@ class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() 
     }
 
     private fun initBoards() {
-        uiScope.launch {
+        viewModelScope.launch {
             _subscribedBoards.value = repository.getSubscribedBoardList()
             allBoards = repository.getBoardsFromDatabase()
             _bottomBoards.value = allBoards
@@ -78,7 +76,7 @@ class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() 
     }
 
     fun searchBoardByKeyword(keyword: String?){
-        uiScope.launch {
+        viewModelScope.launch {
             when(keyword){
                 null -> closeSearch()
                 else -> _bottomBoards.value = repository.searchBoardsFromDatabase(keyword)
