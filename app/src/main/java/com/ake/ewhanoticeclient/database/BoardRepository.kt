@@ -1,8 +1,6 @@
-package com.ake.ewhanoticeclient.activity_subscribe
+package com.ake.ewhanoticeclient.database
 
 import android.content.SharedPreferences
-import com.ake.ewhanoticeclient.database.Board
-import com.ake.ewhanoticeclient.database.BoardDatabaseDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -17,7 +15,11 @@ class BoardRepository private constructor(
 
         fun getInstance(boardDatabase: BoardDatabaseDao, sharedPreferences: SharedPreferences) =
             instance ?: synchronized(this) {
-                instance ?: BoardRepository(boardDatabase, sharedPreferences).also { instance = it }
+                instance
+                    ?: BoardRepository(
+                        boardDatabase,
+                        sharedPreferences
+                    ).also { instance = it }
             }
 
         const val PREFERENCES_NAME = "subscription"

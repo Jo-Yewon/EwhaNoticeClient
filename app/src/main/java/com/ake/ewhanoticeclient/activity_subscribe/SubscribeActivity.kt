@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.ake.ewhanoticeclient.R
 import com.ake.ewhanoticeclient.activity_main.MainActivity
 import com.ake.ewhanoticeclient.database.BoardDatabase
+import com.ake.ewhanoticeclient.database.BoardRepository
 import com.ake.ewhanoticeclient.databinding.ActivitySubscribeBinding
 
 class SubscribeActivity : AppCompatActivity() {
@@ -43,13 +44,13 @@ class SubscribeActivity : AppCompatActivity() {
         })
 
         //BoardList
-        val unsubscribedBoardsListAdapter = BottomBoardsAdapter(
+        val bottomBoardsListAdapter = BottomBoardsAdapter(
             BoardClickListener { board ->
                 viewModel.subscribeBoard(board)
             })
-        binding.unsubscribedBoardList.adapter = unsubscribedBoardsListAdapter
+        binding.unsubscribedBoardList.adapter = bottomBoardsListAdapter
         viewModel.bottomBoards.observe(this, Observer {
-            it?.let { unsubscribedBoardsListAdapter.submitList(it) }
+            it?.let { bottomBoardsListAdapter.submitList(it) }
         })
 
         //Search

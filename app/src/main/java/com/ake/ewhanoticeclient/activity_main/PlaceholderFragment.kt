@@ -4,56 +4,44 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.ake.ewhanoticeclient.R
+import com.ake.ewhanoticeclient.database.Board
+import com.ake.ewhanoticeclient.databinding.FragmentNoticesBinding
 
-/**
- * A placeholder fragment containing a simple view.
- */
-class PlaceholderFragment : Fragment() {
+class PlaceholderFragment(private val board: Board) : Fragment() {
 
-    private lateinit var pageViewModel: PageViewModel
+    private lateinit var pageViewModel: NoticePageViewModel
+    private lateinit var binding: FragmentNoticesBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        pageViewModel = ViewModelProviders.of(this).get(PageViewModel::class.java).apply {
-            setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
-        }
+
+        val factory = NoticePageViewModelFactory(board)
+        pageViewModel = ViewModelProviders.of(this, factory)
+            .get(NoticePageViewModel::class.java)
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_main, container, false)
-        val textView: TextView = root.findViewById(R.id.section_label)
-        pageViewModel.text.observe(this, Observer<String> {
-            textView.text = it
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_notices, container, false)
+
+        val noticesAdapter = NoticesAdapter(NoticeClickListener { pageViewModel.showNotice(it) })
+        binding.noticesRecyclerView.adapter = noticesAdapter
+        pageViewModel.notices.observe(this, Observer {
+            it?.let { noticesAdapter.submitList(it) }
         })
-        return root
+        return binding.root
     }
 
     companion object {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private const val ARG_SECTION_NUMBER = "section_number"
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
         @JvmStatic
-        fun newInstance(sectionNumber: Int): PlaceholderFragment {
-            return PlaceholderFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_SECTION_NUMBER, sectionNumber)
-                }
-            }
+        fun newInstance(board: Board): PlaceholderFragment {
+            return PlaceholderFragment(board)
         }
     }
 }
