@@ -15,7 +15,7 @@ class NoticesAdapter(private val clickListener: NoticeClickListener) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoticeViewHolder =
         NoticeViewHolder.from(parent)
 
-    override fun onBindViewHolder(holder: NoticesAdapter.NoticeViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: NoticeViewHolder, position: Int) {
         val res = holder.itemView.context.resources
         val item = getItem(position)
         item?.let { holder.bind(item, res, clickListener) }
