@@ -1,25 +1,21 @@
 package com.ake.ewhanoticeclient.activity_main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.RecyclerView
 import com.ake.ewhanoticeclient.R
 import com.ake.ewhanoticeclient.database.Board
+import com.ake.ewhanoticeclient.databinding.FragmentNoticesBinding
 
-/**
- * A placeholder fragment containing a simple view.
- */
-class PlaceholderFragment(
-    private val board: Board
-) : Fragment() {
+class PlaceholderFragment(private val board: Board) : Fragment() {
 
     private lateinit var pageViewModel: NoticePageViewModel
+    private lateinit var binding: FragmentNoticesBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,19 +26,16 @@ class PlaceholderFragment(
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_main, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_notices, container, false)
 
-        val recyclerView: RecyclerView = root.findViewById(R.id.boardRecyclerView) as RecyclerView
-        val adapter = NoticesAdapter(NoticeClickListener{ Log.d("pass", "pass") })
-        recyclerView.adapter = adapter
-
+        val noticesAdapter = NoticesAdapter(NoticeClickListener { pageViewModel.showNotice(it) })
+        binding.noticesRecyclerView.adapter = noticesAdapter
         pageViewModel.notices.observe(this, Observer {
-            it?.let { adapter.submitList(it)}
+            it?.let { noticesAdapter.submitList(it) }
         })
-        return root
+        return binding.root
     }
 
     companion object {

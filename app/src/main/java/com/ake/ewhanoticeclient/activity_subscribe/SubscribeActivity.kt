@@ -44,13 +44,13 @@ class SubscribeActivity : AppCompatActivity() {
         })
 
         //BoardList
-        val unsubscribedBoardsListAdapter = BottomBoardsAdapter(
+        val bottomBoardsListAdapter = BottomBoardsAdapter(
             BoardClickListener { board ->
                 viewModel.subscribeBoard(board)
             })
-        binding.unsubscribedBoardList.adapter = unsubscribedBoardsListAdapter
+        binding.unsubscribedBoardList.adapter = bottomBoardsListAdapter
         viewModel.bottomBoards.observe(this, Observer {
-            it?.let { unsubscribedBoardsListAdapter.submitList(it) }
+            it?.let { bottomBoardsListAdapter.submitList(it) }
         })
 
         //Search

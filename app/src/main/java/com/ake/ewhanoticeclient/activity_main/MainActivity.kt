@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
 
+        // Fragments
         val dao = BoardDatabase.getInstance(application).BoardDatabaseDao
         val sharedPreferences = getSharedPreferences(
             BoardRepository.PREFERENCES_NAME, Context.MODE_PRIVATE)

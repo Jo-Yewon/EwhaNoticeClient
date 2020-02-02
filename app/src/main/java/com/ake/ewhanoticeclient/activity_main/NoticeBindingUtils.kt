@@ -9,9 +9,14 @@ import java.lang.StringBuilder
 fun TextView.setNoticeTitle(item: Notice){
     item?.let {
         val title = StringBuilder()
+
         if (item.category != null)
-            title.append("[${item.category}]")
-        title.append(item.title)
-        text = title
+            if (item.category[0]=='[') title.append("${item.category} ")
+            else title.append("[${item.category}] ")
+
+        if (item.title[0]=='\n') title.append(item.title.substring(1))
+        else title.append(item.title)
+
+        text = title.toString()
     }
 }

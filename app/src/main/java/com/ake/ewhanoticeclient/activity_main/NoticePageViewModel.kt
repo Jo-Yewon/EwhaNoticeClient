@@ -29,4 +29,8 @@ class NoticePageViewModel(
         }
         return LivePagedListBuilder<Int, Notice>(dataSourceFactory, config)
     }
+
+    fun showNotice(notice: Notice){
+        TODO("공지사항 크롬탭으로 띄워주세요")
+    }
 }
