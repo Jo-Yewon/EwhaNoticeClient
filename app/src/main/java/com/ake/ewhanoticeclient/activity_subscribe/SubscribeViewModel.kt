@@ -21,9 +21,6 @@ class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() 
     val bottomBoards: LiveData<List<Board>>
         get() = _bottomBoards
 
-//    private var viewModelJob = Job()
-//    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-
     val isSubscribedBoard = Transformations.map(subscribedBoards){
         if (it.isEmpty()) View.GONE else View.VISIBLE }
 
