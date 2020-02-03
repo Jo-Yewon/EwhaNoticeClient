@@ -12,12 +12,17 @@ class NoticePageViewModel(
 
     var notices :LiveData<PagedList<Notice>>
 
+    private var _url = MutableLiveData<String?>()
+    val url: LiveData<String?>
+        get() = _url
+
     init {
         val config = PagedList.Config.Builder()
             .setPageSize(10)
             .setEnablePlaceholders(false)
             .build()
         notices = initializedPagedListBuilder(config).build()
+        _url.value = null
     }
 
     private fun initializedPagedListBuilder(config: PagedList.Config):
@@ -31,6 +36,6 @@ class NoticePageViewModel(
     }
 
     fun showNotice(notice: Notice){
-        TODO("공지사항 크롬탭으로 띄워주세요")
+        _url.value = notice.url
     }
 }

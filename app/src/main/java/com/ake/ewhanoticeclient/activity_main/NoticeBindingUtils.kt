@@ -20,3 +20,10 @@ fun TextView.setNoticeTitle(item: Notice){
         text = title.toString()
     }
 }
+
+@BindingAdapter("date")
+fun TextView.setDate(item:Notice){
+    item?.let{
+        text = item.date.substring(2)
+    }
+}

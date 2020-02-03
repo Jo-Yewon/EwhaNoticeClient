@@ -68,4 +68,7 @@ dependencies {
 
     //Paging
     implementation "androidx.paging:paging-runtime:$paging_version"
+
+    //Chrome Custom tab
+    implementation 'androidx.browser:browser:1.2.0'
 }

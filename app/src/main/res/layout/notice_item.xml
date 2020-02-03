@@ -70,9 +70,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|end"
                     android:textSize="@dimen/small_text"
-                    tools:text="2020-02-02"
+                    tools:text="20-02-02"
+                    date="@{notice}"
                     android:textAlignment="textEnd"
-                    android:text="@{notice.date}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
