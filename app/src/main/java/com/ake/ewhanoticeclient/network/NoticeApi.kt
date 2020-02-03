@@ -12,7 +12,7 @@ interface NoticeApi {
     @GET("/notice/notices/{board_id}/")
     suspend fun getNotices(@Path("board_id") boardId: Int): Notices
 
-    @GET("{/notice/notices/{board_id}/")
+    @GET("/notice/notices/{board_id}/")
     suspend fun getNoticesWithPage(
         @Path("board_id") boardId: Int,
         @Query("page") page: Int

@@ -8,16 +8,18 @@ import java.lang.StringBuilder
 @BindingAdapter("noticeTitle")
 fun TextView.setNoticeTitle(item: Notice){
     item?.let {
-        val title = StringBuilder()
+        val stringBuilder = StringBuilder()
 
         if (item.category != null)
-            if (item.category[0]=='[') title.append("${item.category} ")
-            else title.append("[${item.category}] ")
+            if (item.category[0]=='[') stringBuilder.append("${item.category} ")
+            else stringBuilder.append("[${item.category}] ")
 
-        if (item.title[0]=='\n') title.append(item.title.substring(1))
-        else title.append(item.title)
+        var title = item.title
+        if (title.endsWith('\n')) title = title.substring(0, title.length-1)
+        if (title[0]=='\n') stringBuilder.append(title.substring(1))
+        else stringBuilder.append(title)
 
-        text = title.toString()
+        text = stringBuilder.toString()
     }
 }
 
