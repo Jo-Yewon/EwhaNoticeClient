@@ -13,4 +13,7 @@ interface BoardDatabaseDao{
 
     @Query("select * from board_table where title like :keyword")
     fun searchBoardByKeyword(keyword: String): List<Board>
+
+    @Query("select distinct board_category from board_table")
+    fun getAllTopics(): List<String>
 }

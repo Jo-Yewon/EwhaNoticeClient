@@ -63,4 +63,10 @@ class BoardRepository private constructor(
             boardDatabase.searchBoardByKeyword("%${keyword}%")
         }
     }
+
+    suspend fun getAllTopics(): List<String>{
+        return withContext(Dispatchers.IO){
+            boardDatabase.getAllTopics()
+        }
+    }
 }
