@@ -13,6 +13,7 @@ import com.ake.ewhanoticeclient.activity_main.MainActivity
 import com.ake.ewhanoticeclient.database.BoardDatabase
 import com.ake.ewhanoticeclient.database.BoardRepository
 import com.ake.ewhanoticeclient.databinding.ActivitySubscribeBinding
+import com.google.android.datatransport.runtime.scheduling.jobscheduling.SchedulerConfig
 
 class SubscribeActivity : AppCompatActivity() {
 
@@ -64,7 +65,7 @@ class SubscribeActivity : AppCompatActivity() {
 
         //Navigate
         viewModel.navigateToMainActivity.observe(this, Observer {
-            if (it) startActivity(Intent(this, MainActivity::class.java))
+            if (it){ startActivity(Intent(this, MainActivity::class.java)) }
         })
     }
 

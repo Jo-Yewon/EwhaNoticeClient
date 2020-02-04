@@ -5,6 +5,7 @@ import android.view.View
 import androidx.lifecycle.*
 import com.ake.ewhanoticeclient.database.Board
 import com.ake.ewhanoticeclient.database.BoardRepository
+import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,11 +22,9 @@ class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() 
     val bottomBoards: LiveData<List<Board>>
         get() = _bottomBoards
 
-//    private var viewModelJob = Job()
-//    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-
-    val isSubscribedBoard = Transformations.map(subscribedBoards){
-        if (it.isEmpty()) View.GONE else View.VISIBLE }
+    val isSubscribedBoard = Transformations.map(subscribedBoards) {
+        if (it.isEmpty()) View.GONE else View.VISIBLE
+    }
 
     private val _navigateToMainActivity = MutableLiveData<Boolean>()
     val navigateToMainActivity: LiveData<Boolean>
@@ -57,11 +56,12 @@ class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() 
     }
 
     fun subscribeBoard(board: Board) {
-        when(_subscribedBoards.value?.size){
+        when (_subscribedBoards.value?.size) {
             0 -> _subscribedBoards.value = mutableListOf(board)
             5 -> {
                 //TODO 5개 이상 구독할 수 없다고 알려주어야 해요
-                Log.d("subscribe", "wait")}
+                Log.d("subscribe", "wait")
+            }
             else -> {
                 val subscribedBoards = (_subscribedBoards.value as MutableList).toMutableList()
                 for (existedBoard in subscribedBoards)
@@ -75,16 +75,16 @@ class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() 
         }
     }
 
-    fun searchBoardByKeyword(keyword: String?){
+    fun searchBoardByKeyword(keyword: String?) {
         viewModelScope.launch {
-            when(keyword){
+            when (keyword) {
                 null -> closeSearch()
                 else -> _bottomBoards.value = repository.searchBoardsFromDatabase(keyword)
             }
         }
     }
 
-    fun closeSearch(){
+    fun closeSearch() {
         _bottomBoards.value = allBoards
     }
 
@@ -93,16 +93,14 @@ class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() 
         _navigateToMainActivity.value = true
     }
 
-    private fun subscribeBoards(){
-        val preSubscribedBoards = repository.getSubscribedBoardList()
-
-        FirebaseMessaging.getInstance().apply {
-            for(preBoard in preSubscribedBoards)
-                this.unsubscribeFromTopic(preBoard.boardCategory)
-            for(board in _subscribedBoards.value!!)
-                this.subscribeToTopic(board.boardCategory)
+    private fun subscribeBoards() {
+        val firebaseMessaging = FirebaseMessaging.getInstance()
+        viewModelScope.launch {
+            for (topic in repository.getAllTopics())
+                firebaseMessaging.unsubscribeFromTopic(topic)
+            for (board in _subscribedBoards.value!!)
+                firebaseMessaging.subscribeToTopic(board.boardCategory)
         }
-
         repository.setSubscribedBoardList(_subscribedBoards.value!!)
     }
 }
