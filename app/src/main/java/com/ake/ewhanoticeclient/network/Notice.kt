@@ -17,14 +17,14 @@ data class Notices(
     val results: List<Notice>
 ){
     companion object{
-        private val pattern = Pattern.compile("Page=")
+        private val pattern = Pattern.compile("page=")
 
         fun getPage(url: String?): Int?{
             if (url == null) return null
             val matcher = pattern.matcher(url)
             return when(matcher.find()){
                 true -> Integer.parseInt(url.substring(matcher.end()))
-                false -> 1
+                false -> null
             }
         }
     }

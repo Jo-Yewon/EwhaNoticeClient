@@ -38,12 +38,14 @@ class PlaceholderFragment(private val board: Board) : Fragment() {
 
         val noticesAdapter = NoticesAdapter(NoticeClickListener { pageViewModel.showNotice(it) })
         binding.noticesRecyclerView.adapter = noticesAdapter
-        pageViewModel.notices.observe(this, Observer {
+        pageViewModel.notices.observe(viewLifecycleOwner, Observer {
             it?.let { noticesAdapter.submitList(it) }
         })
 
-        pageViewModel.url.observe(this, Observer {
-            it?.let { customTabsIntent.launchUrl(context!!, Uri.parse(it)) }
+        pageViewModel.url.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                pageViewModel.endShowNotice()
+                customTabsIntent.launchUrl(context!!, Uri.parse(it)) }
         })
         return binding.root
     }

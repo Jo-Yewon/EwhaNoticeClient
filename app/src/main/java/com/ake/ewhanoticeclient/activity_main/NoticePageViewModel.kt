@@ -38,4 +38,8 @@ class NoticePageViewModel(
     fun showNotice(notice: Notice){
         _url.value = notice.url
     }
+
+    fun endShowNotice(){
+        _url.value = null
+    }
 }
