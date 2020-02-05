@@ -23,8 +23,10 @@ class StartActivity : AppCompatActivity() {
             BoardRepository.PREFERENCES_NAME, Context.MODE_PRIVATE)
         val repository = BoardRepository.getInstance(dao, sharedPreferences)
 
-        startActivity(Intent(this, when(repository.getSubscribedBoardList().size){
-            0 -> SubscribeActivity::class.java
-            else -> MainActivity::class.java }))
+        if (repository.getSubscribedBoardList().isEmpty()){
+            repository.setPushStatus(true)  // Default true
+            startActivity(Intent(this, SubscribeActivity::class.java))
+        }else
+            startActivity(Intent(this, MainActivity::class.java))
     }
 }

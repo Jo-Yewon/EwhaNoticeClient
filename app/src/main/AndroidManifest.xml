@@ -21,7 +21,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity_start.StartActivity"
+        <activity
+            android:name=".activity_setting.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:noHistory="true"></activity>
+        <activity
+            android:name=".activity_start.StartActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,8 +34,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity_subscribe.SubscribeActivity"
-            android:noHistory="true"/>
+        <activity
+            android:name=".activity_subscribe.SubscribeActivity"
+            android:noHistory="true" />
         <activity android:name=".activity_main.MainActivity" />
 
         <service
