@@ -23,7 +23,7 @@ class NoticeDataSource(
     ) {
         viewModelScope.launch {
             try {
-                val response = apiService.getNotices(boardId)
+                val response = apiService.getNoticesWithPage(boardId, 1)
                 when (response.count) {
                     0 -> throw Exception("올바르지 않은 게시판에 접근함")
                     else -> callback.onResult(

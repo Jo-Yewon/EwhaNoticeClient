@@ -6,7 +6,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
     <dimen name="small_text">10sp</dimen>
-    <dimen name="medium_text">12sp</dimen>
+    <dimen name="medium_text">14sp</dimen>
     <dimen name="icon_margin">20dp</dimen>
     <dimen name="setting_margin">20dp</dimen>
 </resources>
