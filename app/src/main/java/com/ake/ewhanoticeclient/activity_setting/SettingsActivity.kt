@@ -2,6 +2,7 @@ package com.ake.ewhanoticeclient.activity_setting
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -20,7 +21,8 @@ class SettingsActivity : AppCompatActivity() {
 
         val dao = BoardDatabase.getInstance(application).BoardDatabaseDao
         val sharedPreferences = getSharedPreferences(
-            BoardRepository.PREFERENCES_NAME, Context.MODE_PRIVATE)
+            BoardRepository.PREFERENCES_NAME, Context.MODE_PRIVATE
+        )
         val repository = BoardRepository.getInstance(dao, sharedPreferences)
 
         val binding: ActivitySettingBinding =
@@ -33,15 +35,27 @@ class SettingsActivity : AppCompatActivity() {
 
         // Observing navigation
         viewModel.navigate.observe(this, Observer {
-            if (it != SettingViewModel.DEFAULT) {
+            it?.let {
                 viewModel.endNavigate()
                 when (it) {
                     SettingViewModel.SUBSCRIBE ->
                         startActivity(Intent(this, SubscribeActivity::class.java))
                     SettingViewModel.BACK ->
                         finish()
-                    SettingViewModel.INFO ->
-                        TODO()
+                    SettingViewModel.GITHUB ->
+                        startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://github.com/Jo-Yewon/EwhaNoticeClient")
+                            )
+                        )
+                    SettingViewModel.REPORT ->{
+                        val intent = Intent(Intent.ACTION_SEND).apply {
+                            type = "plain/text"
+                            putExtra(Intent.EXTRA_EMAIL, "yeawonjo@gmail.com")
+                        }
+                        startActivity(intent)
+                    }
                 }
             }
         })

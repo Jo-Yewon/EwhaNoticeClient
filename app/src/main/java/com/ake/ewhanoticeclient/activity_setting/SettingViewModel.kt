@@ -16,17 +16,19 @@ class SettingViewModel(private val boardRepository: BoardRepository): ViewModel(
     get() = _navigate
 
     init {
-        _navigate.value = DEFAULT
+        _navigate.value = null
         _isPushAlarm.value = boardRepository.getPushStatus()
     }
 
     fun backButtonClicked(){ _navigate.value = BACK }
 
-    fun subscribeButtonClicked(){ _navigate.value = SUBSCRIBE  }
+    fun subscribeButtonClicked(){ _navigate.value = SUBSCRIBE }
 
-    fun infoButtonClicked(){_navigate.value = INFO}
+    fun githubButtonClicked(){ _navigate.value = GITHUB }
 
-    fun endNavigate(){ _navigate.value = DEFAULT }
+    fun reportButtonClicked(){ _navigate.value = REPORT }
+
+    fun endNavigate(){ _navigate.value = null }
 
     fun togglePushAlarm(){
         _isPushAlarm.value?.let {
@@ -37,9 +39,9 @@ class SettingViewModel(private val boardRepository: BoardRepository): ViewModel(
 
     companion object{
         // Navigation flag
-        const val DEFAULT = 0
-        const val BACK = 1
-        const val INFO = 2
+        const val BACK = 0
+        const val GITHUB = 1
+        const val REPORT = 2
         const val SUBSCRIBE = 3
     }
 }
