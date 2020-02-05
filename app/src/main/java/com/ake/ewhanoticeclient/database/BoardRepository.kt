@@ -24,6 +24,7 @@ class BoardRepository private constructor(
 
         const val PREFERENCES_NAME = "subscription"
         private const val KEY = "subscription"
+        private const val PUSH = "push"
     }
 
     fun setSubscribedBoardList(boards: List<Board>) {
@@ -68,5 +69,14 @@ class BoardRepository private constructor(
         return withContext(Dispatchers.IO){
             boardDatabase.getAllTopics()
         }
+    }
+
+    fun setPushStatus(push: Boolean){
+        val editor = sharedPreferences.edit()
+        editor.putBoolean(PUSH, push)
+    }
+
+    fun getPushStatus(): Boolean{
+        return sharedPreferences.getBoolean(PUSH, true)
     }
 }

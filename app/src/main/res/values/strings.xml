@@ -7,4 +7,13 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="description">\'이화알리미\'는\n이화여자대학교와 관계없이\n개인적으로 제작된 비공식 앱입니다.</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Setting -->
+    <string name="setting_subscribe_board_title">게시판 구독하기</string>
+    <string name="setting_subscribe_board_desc">구독할 게시판을 추가하거나 변경할 수 있어요.</string>
+    <string name="setting_push_title">새로운 공지사항 알림 받기</string>
+    <string name="setting_push_desc">푸시 알림을 받을지 설정하세요</string>
+    <string name="setting_opensource">사용한 오픈소스</string>
+    <string name="setting_inform">앱 정보</string>
 </resources>
