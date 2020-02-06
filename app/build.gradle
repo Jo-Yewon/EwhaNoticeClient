@@ -51,6 +51,7 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 
     // Firebase messaging
     implementation 'com.google.firebase:firebase-messaging:20.1.0'
@@ -77,4 +78,7 @@ dependencies {
 
     //Chrome Custom tab
     implementation 'androidx.browser:browser:1.2.0'
+
+    //Ad
+    //implementation 'com.google.android.gms:play-services-ads:18.3.0'
 }

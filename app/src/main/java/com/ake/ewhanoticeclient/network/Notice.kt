@@ -1,5 +1,6 @@
 package com.ake.ewhanoticeclient.network
 
+import android.util.Log
 import java.util.regex.Pattern
 
 data class Notice(
@@ -8,7 +9,11 @@ data class Notice(
     val category: String?,
     val date: String,
     val url: String
-)
+){
+    init{
+        Log.d("notice", "init")
+    }
+}
 
 data class Notices(
     val count: Int,
