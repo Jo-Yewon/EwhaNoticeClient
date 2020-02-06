@@ -35,6 +35,8 @@ class PlaceholderFragment(private val board: Board) : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_notices, container, false)
+        binding.lifecycleOwner = this
+        binding.viewModel = pageViewModel
 
         val noticesAdapter = NoticesAdapter(NoticeClickListener { pageViewModel.showNotice(it) })
         binding.noticesRecyclerView.adapter = noticesAdapter
@@ -45,7 +47,8 @@ class PlaceholderFragment(private val board: Board) : Fragment() {
         pageViewModel.url.observe(viewLifecycleOwner, Observer {
             it?.let {
                 pageViewModel.endShowNotice()
-                customTabsIntent.launchUrl(context!!, Uri.parse(it)) }
+                customTabsIntent.launchUrl(context!!, Uri.parse(it))
+            }
         })
         return binding.root
     }
@@ -57,7 +60,7 @@ class PlaceholderFragment(private val board: Board) : Fragment() {
         }
     }
 
-    private fun initCustomTabs(){
+    private fun initCustomTabs() {
         val builder = CustomTabsIntent.Builder()
         builder.setToolbarColor(resources.getColor(R.color.colorPrimaryDark))
         customTabsIntent = builder.build()
