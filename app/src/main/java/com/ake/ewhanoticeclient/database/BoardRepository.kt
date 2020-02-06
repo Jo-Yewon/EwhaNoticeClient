@@ -74,6 +74,7 @@ class BoardRepository constructor(
     fun setPushStatus(push: Boolean){
         val editor = sharedPreferences.edit()
         editor.putBoolean(PUSH, push)
+        editor.commit()
     }
 
     fun getPushStatus(): Boolean{
