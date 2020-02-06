@@ -16,4 +16,5 @@
     <string name="setting_push_desc">푸시 알림을 받을지 설정하세요</string>
     <string name="setting_opensource">사용한 오픈소스</string>
     <string name="setting_inform">앱 정보</string>
+    <string name="load_error">공지사항을 불러오는데 오류가 발생했어요.\n네트워크 상태등을 확인하고 다시 시도해주세요</string>
 </resources>

@@ -12,7 +12,8 @@ import kotlinx.coroutines.launch
 
 class NoticeDataSource(
     private val boardId: Int,
-    private val viewModelScope: CoroutineScope
+    private val viewModelScope: CoroutineScope,
+    private val viewModel: NoticePageViewModel
 ) : LifecycleObserver, PageKeyedDataSource<Int, Notice>() {
 
     private val apiService = NoticeApi.create()
@@ -34,7 +35,8 @@ class NoticeDataSource(
                 }
             } catch (exception: Exception) {
                 Log.e("GetNoticeData", "Failed to fetch data")
-                TODO("데이터 가져오기 실패시 처리해주세요")
+                viewModel.endLoad()
+                viewModel.showError()
             }
         }
     }
@@ -55,7 +57,8 @@ class NoticeDataSource(
                 }
             } catch (exception: Exception) {
                 Log.e("GetNoticeData", "Failed to fetch data")
-                TODO("데이터 가져오기 실패시 처리해주세요")
+                viewModel.endLoad()
+                viewModel.showError()
             }
         }
     }
@@ -76,7 +79,8 @@ class NoticeDataSource(
                 }
             } catch (exception: Exception) {
                 Log.e("GetNoticeData", "Failed to fetch data")
-                TODO("데이터 가져오기 실패시 처리해주세요")
+                viewModel.endLoad()
+                viewModel.showError()
             }
         }
     }
