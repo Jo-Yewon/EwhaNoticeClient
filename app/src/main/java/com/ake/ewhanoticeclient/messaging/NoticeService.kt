@@ -8,8 +8,7 @@ import com.google.firebase.messaging.RemoteMessage
 
 class NoticeService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
-        if (message != null)
-            sendNotification(message)
+        sendNotification(message)
     }
 
     private fun sendNotification(message: RemoteMessage) {
