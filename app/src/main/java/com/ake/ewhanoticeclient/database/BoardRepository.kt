@@ -5,8 +5,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
 
-class BoardRepository private constructor(
-    private val boardDatabase: BoardDatabaseDao,
+class BoardRepository constructor(
+    private val boardDatabase: BoardDatabaseDao?,
     private val sharedPreferences: SharedPreferences) {
 
     companion object {
@@ -55,19 +55,19 @@ class BoardRepository private constructor(
 
     suspend fun getBoardsFromDatabase(): List<Board>{
         return withContext(Dispatchers.IO){
-            boardDatabase.getAllBoards()
+            boardDatabase!!.getAllBoards()
         }
     }
 
     suspend fun searchBoardsFromDatabase(keyword: String): List<Board>{
         return withContext(Dispatchers.IO){
-            boardDatabase.searchBoardByKeyword("%${keyword}%")
+            boardDatabase!!.searchBoardByKeyword("%${keyword}%")
         }
     }
 
     suspend fun getAllTopics(): List<String>{
         return withContext(Dispatchers.IO){
-            boardDatabase.getAllTopics()
+            boardDatabase!!.getAllTopics()
         }
     }
 

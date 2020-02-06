@@ -16,4 +16,10 @@
     <string name="setting_push_desc">푸시 알림을 받을지 설정하세요</string>
     <string name="setting_opensource">사용한 오픈소스</string>
     <string name="setting_inform">앱 정보</string>
+    <string name="load_error">공지사항을 불러오는데 오류가 발생했어요.\n네트워크 상태등을 확인하고 다시 시도해주세요</string>
+    
+    <!-- Ad -->
+    <string name="admob_app_id">ca-app-pub-5038601532607070~8313670683</string>
+    <string name="banner_ad_unit_id">ca-app-pub-5038601532607070/8268889915</string>
+    <string name="banner_ad_unit_id_for_test">ca-app-pub-3940256099942544/6300978111</string>
 </resources>
