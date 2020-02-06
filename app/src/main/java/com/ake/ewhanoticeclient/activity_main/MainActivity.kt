@@ -12,6 +12,7 @@ import com.ake.ewhanoticeclient.activity_setting.SettingsActivity
 import com.ake.ewhanoticeclient.database.BoardDatabase
 import com.ake.ewhanoticeclient.database.BoardRepository
 import com.ake.ewhanoticeclient.databinding.ActivityMainBinding
+import com.google.android.gms.ads.AdRequest
 
 
 class MainActivity : AppCompatActivity() {
@@ -44,5 +45,11 @@ class MainActivity : AppCompatActivity() {
         binding.viewPager.adapter = sectionsPagerAdapter
 
         binding.tabs.setupWithViewPager(binding.viewPager)
+
+        initAdmob()
+    }
+
+    private fun initAdmob(){
+        binding.adView.loadAd(AdRequest.Builder().build())
     }
 }

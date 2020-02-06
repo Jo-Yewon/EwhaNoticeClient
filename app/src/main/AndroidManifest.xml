@@ -11,10 +11,6 @@
     <meta-data
         android:name="com.google.firebase.messaging.default_notification_channel_id"
         android:value="@string/default_notification_channel_id" />
-<!--    <meta-data-->
-<!--        android:name="com.google.android.gms.ads.APPLICATION_ID"-->
-<!--        android:value="@string/admob_app_id">-->
-<!--    </meta-data>-->
 
     <application
         android:name=".MyApplication"
@@ -25,6 +21,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/admob_app_id">
+        </meta-data>
+
         <activity
             android:name=".activity_setting.SettingsActivity"
             android:label="@string/title_activity_settings"
