@@ -1,3 +1,25 @@
 <resources>
-    <string name="app_name">EwhaNoticeClient</string>
+    <string name="app_name">이화알리미</string>
+    <string name="default_notification_channel_id">공지사항</string>
+    <string name="notification_description">새로운 공지사항에 대한 알림을 전송합니다.</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="description">\'이화알리미\'는\n이화여자대학교와 관계없이\n개인적으로 제작된 비공식 앱입니다.\n광고수익은 서버 유지 비용으로 사용됩니다.</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Setting -->
+    <string name="setting_subscribe_board_title">게시판 구독하기</string>
+    <string name="setting_subscribe_board_desc">구독할 게시판을 추가하거나 변경할 수 있어요.</string>
+    <string name="setting_push_title">새로운 공지사항 알림 받기</string>
+    <string name="setting_push_desc">푸시 알림을 받을지 설정하세요</string>
+    <string name="setting_opensource">사용한 오픈소스</string>
+    <string name="setting_inform">앱 정보</string>
+    <string name="load_error">공지사항을 불러오는데 오류가 발생했어요.\n네트워크 상태등을 확인하고 다시 시도해주세요</string>
+
+    <!-- Ad -->
+    <string name="admob_app_id">ca-app-pub-5038601532607070~8313670683</string>
+    <string name="banner_ad_unit_id">ca-app-pub-5038601532607070/8268889915</string>
+    <string name="banner_ad_unit_id_for_test">ca-app-pub-3940256099942544/6300978111</string>
 </resources>
