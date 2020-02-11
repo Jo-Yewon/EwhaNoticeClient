@@ -1,9 +1,11 @@
 package com.ake.ewhanoticeclient.activity_main
 
+import android.annotation.TargetApi
 import android.app.DownloadManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
@@ -21,11 +23,12 @@ import androidx.fragment.app.Fragment
 import com.ake.ewhanoticeclient.R
 import com.ake.ewhanoticeclient.databinding.FragmentCommonNoticesBinding
 
-class CommonPlaceholderFragment : Fragment() {
+class CommonPlaceholderFragment : Fragment(), MainActivity.CommonBoardFragment {
     // For common boards
     companion object {
         private const val commonUrl =
             "http://www.ewha.ac.kr/mbs/ewhamk/jsp/board/list.jsp?boardId=13259&id=ewhamk_010502000000"
+        const val DOWNLOAD_PERMISSION_REQ_CODE = 101
 
         @JvmStatic
         fun newInstance(): CommonPlaceholderFragment {
@@ -45,39 +48,45 @@ class CommonPlaceholderFragment : Fragment() {
         binding.lifecycleOwner = this
 
         initWebView()
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.webView.reload()
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
         return binding.root
     }
 
-    private fun showLoading(){
+    override fun onBackPressed(): Boolean {
+        if (binding.webView.canGoBack()) {
+            binding.webView.goBack()
+            return true
+        }
+        return false
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as MainActivity).setCommon(this)
+    }
+
+    override fun onStop() {
+        (activity as MainActivity).setCommon(null)
+        super.onStop()
+    }
+
+    private fun showLoading() {
         binding.loading.visibility = View.VISIBLE
     }
 
-    private fun hideLoading(){
-        binding.loading.visibility = View.VISIBLE
+    private fun hideLoading() {
+        binding.loading.visibility = View.INVISIBLE
     }
 
-    private fun showError(){
+    private fun showError() {
         binding.error.visibility = View.VISIBLE
     }
 
     private fun initWebView() {
         showLoading()
-
-        binding.webView.webViewClient = object : WebViewClient(){
-            override fun onPageFinished(view: WebView?, url: String?) {
-                super.onPageFinished(view, url)
-                hideLoading()
-            }
-
-            override fun onReceivedError(
-                view: WebView?,
-                request: WebResourceRequest?,
-                error: WebResourceError?
-            ) {
-                super.onReceivedError(view, request, error)
-                showError()
-            }
-        }
 
         val webSettings = binding.webView.settings
         webSettings.apply {
@@ -91,7 +100,34 @@ class CommonPlaceholderFragment : Fragment() {
         }
 
         binding.webView.apply {
-            webViewClient = WebViewClient()
+            webViewClient = object : WebViewClient() {
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    super.onPageFinished(view, url)
+                    hideLoading()
+                }
+
+                @TargetApi(Build.VERSION_CODES.M)
+                override fun onReceivedError(
+                    view: WebView?,
+                    request: WebResourceRequest?,
+                    error: WebResourceError?
+                ) {
+                    super.onReceivedError(view, request, error)
+                    if (error!!.errorCode != ERROR_UNKNOWN) showError()
+                }
+
+                override fun onReceivedError(
+                    view: WebView?,
+                    errorCode: Int,
+                    description: String?,
+                    failingUrl: String?
+                ) {
+                    super.onReceivedError(view, errorCode, description, failingUrl)
+                    if (errorCode != -1) showError()
+
+                }
+            }
+
             setDownloadListener { url, userAgent, contentDisposition, mimeType, _ ->
                 try {
                     val request = DownloadManager.Request(Uri.parse(url))
@@ -118,26 +154,38 @@ class CommonPlaceholderFragment : Fragment() {
                     Toast.makeText(context, "Downloading File", Toast.LENGTH_LONG).show()
                 } catch (e: Exception) {
                     if (ContextCompat.checkSelfPermission(
-                            context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
+                            context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        )
+                        != PackageManager.PERMISSION_GRANTED
+                    ) {
                         if (ActivityCompat.shouldShowRequestPermissionRationale(
                                 activity!!,
-                                android.Manifest.permission.WRITE_EXTERNAL_STORAGE))
-                        {
-                            Toast.makeText(context, "파일 다운로드를 위해 동의가 필요합니다.", Toast.LENGTH_LONG)
+                                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            )
+                        ) {
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.download_permission_desc),
+                                Toast.LENGTH_LONG
+                            )
                                 .show()
                             ActivityCompat.requestPermissions(
                                 activity!!,
                                 arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                                110)
-                        }
-                        else{
-                            Toast.makeText(context, "파일 다운로드를 위해 동의가 필요합니다.", Toast.LENGTH_LONG)
+                                DOWNLOAD_PERMISSION_REQ_CODE
+                            )
+                        } else {
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.download_permission_desc),
+                                Toast.LENGTH_LONG
+                            )
                                 .show()
                             ActivityCompat.requestPermissions(
                                 activity!!,
                                 arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                                110)
+                                DOWNLOAD_PERMISSION_REQ_CODE
+                            )
                         }
                     }
                 }

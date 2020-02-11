@@ -12,12 +12,15 @@ import com.ake.ewhanoticeclient.activity_setting.SettingsActivity
 import com.ake.ewhanoticeclient.database.BoardDatabase
 import com.ake.ewhanoticeclient.database.BoardRepository
 import com.ake.ewhanoticeclient.databinding.ActivityMainBinding
-import com.google.android.gms.ads.AdRequest
 
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
+
+    interface CommonBoardFragment{
+        fun onBackPressed(): Boolean }
+    private var common: CommonBoardFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,11 +48,16 @@ class MainActivity : AppCompatActivity() {
         binding.viewPager.adapter = sectionsPagerAdapter
 
         binding.tabs.setupWithViewPager(binding.viewPager)
-
-        initAdmob()
     }
 
-    private fun initAdmob(){
-        binding.adView.loadAd(AdRequest.Builder().build())
+    fun setCommon(common: CommonBoardFragment?){
+        // Connect common board fragment
+        this.common = common
+    }
+
+    override fun onBackPressed() {
+        // For webView in a common board fragment
+        if (common != null && (common as CommonBoardFragment).onBackPressed()) return
+        else super.onBackPressed()
     }
 }
