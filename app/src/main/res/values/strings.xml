@@ -6,7 +6,7 @@
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
     <string name="title_activity_main2">Main2Activity</string>
-    <string name="description">\'이화알리미\'는\n이화여자대학교와 관계없이\n개인적으로 제작된 비공식 앱입니다.\n광고수익은 서버 유지 비용으로 사용됩니다.</string>
+    <string name="description">\'이화알리미\'는\n이화여자대학교와 관계없이\n개인적으로 제작된 비공식 앱입니다.\n이 앱을 이용해 별도의 수입을 창출하지 않습니다.</string>
     <string name="title_activity_settings">Settings</string>
 
     <!-- Setting -->
@@ -22,4 +22,7 @@
     <string name="admob_app_id">ca-app-pub-5038601532607070~8313670683</string>
     <string name="banner_ad_unit_id">ca-app-pub-5038601532607070/8268889915</string>
     <string name="banner_ad_unit_id_for_test">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="download_permission_desc">파일 다운로드를 위해 동의가 필요합니다.</string>
+    <string name="select_boards_desc">구독할 게시판을 선택하세요.(최대 5개 선택 가능)</string>
+    <string name="confirm">확인</string>
 </resources>

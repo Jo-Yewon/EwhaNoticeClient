@@ -11,15 +11,12 @@ import com.ake.ewhanoticeclient.activity_subscribe.SubscribeActivity
 import com.ake.ewhanoticeclient.database.BoardDatabase
 import com.ake.ewhanoticeclient.database.BoardRepository
 import com.ake.ewhanoticeclient.databinding.ActivityStartBinding
-import com.google.android.gms.ads.MobileAds
 
 class StartActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         DataBindingUtil.setContentView(this, R.layout.activity_start) as ActivityStartBinding
-
-        initAdmob()
 
         val dao = BoardDatabase.getInstance(application).BoardDatabaseDao
         val sharedPreferences = getSharedPreferences(
@@ -31,9 +28,5 @@ class StartActivity : AppCompatActivity() {
             startActivity(Intent(this, SubscribeActivity::class.java))
         }else
             startActivity(Intent(this, MainActivity::class.java))
-    }
-
-    fun initAdmob(){
-        MobileAds.initialize(this){}
     }
 }

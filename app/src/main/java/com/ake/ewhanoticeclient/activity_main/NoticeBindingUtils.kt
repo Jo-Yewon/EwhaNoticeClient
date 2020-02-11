@@ -29,11 +29,7 @@ fun TextView.setNoticeTitle(item: Notice){
             if (item.category[0]=='[') stringBuilder.append("${item.category} ")
             else stringBuilder.append("[${item.category}] ")
 
-        var title = item.title
-        if (title.endsWith('\n')) title = title.substring(0, title.length-1)
-        if (title[0]=='\n') stringBuilder.append(title.substring(1))
-        else stringBuilder.append(title)
-
+        stringBuilder.append(item.title.replace("\n",""))
         text = stringBuilder.toString()
     }
 }

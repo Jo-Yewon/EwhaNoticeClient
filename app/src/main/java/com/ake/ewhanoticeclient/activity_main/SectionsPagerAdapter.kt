@@ -13,7 +13,9 @@ class SectionsPagerAdapter(
     private val subscribedBoards by lazy { boardRepository.getSubscribedBoardList() }
 
     override fun getItem(position: Int): Fragment =
-        PlaceholderFragment.newInstance(subscribedBoards[position])
+        subscribedBoards[position].let{
+            if (it.boardId == 13259) CommonPlaceholderFragment.newInstance()
+            else PlaceholderFragment.newInstance(it) }
 
     override fun getPageTitle(position: Int) = subscribedBoards[position].alias
 

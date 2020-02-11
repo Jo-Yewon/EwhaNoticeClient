@@ -50,9 +50,8 @@ class SettingsActivity : AppCompatActivity() {
                             )
                         )
                     SettingViewModel.REPORT ->{
-                        val intent = Intent(Intent.ACTION_SEND).apply {
-                            type = "plain/text"
-                            putExtra(Intent.EXTRA_EMAIL, arrayListOf("yeawonjo@gmail.com"))
+                        val intent = Intent(Intent.ACTION_SENDTO).apply {
+                            data = Uri.parse("mailto:yeawonjo@gmail.com")
                         }
                         startActivity(intent)
                     }
