@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ake.ewhanoticeclient">
 
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- <meta-data -->
-    <!-- android:name="com.google.firebase.messaging.default_notification_icon" -->
-    <!-- android:resource="@drawable/ic_stat_ic_notification" /> -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+
     <meta-data
         android:name="com.google.firebase.messaging.default_notification_color"
         android:resource="@color/colorAccent" />
@@ -21,11 +21,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/admob_app_id">
-        </meta-data>
 
         <activity
             android:name=".activity_setting.SettingsActivity"

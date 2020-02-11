@@ -78,7 +78,4 @@ dependencies {
 
     //Chrome Custom tab
     implementation 'androidx.browser:browser:1.2.0'
-
-    //Ad
-    implementation 'com.google.android.gms:play-services-ads:18.3.0'
 }
