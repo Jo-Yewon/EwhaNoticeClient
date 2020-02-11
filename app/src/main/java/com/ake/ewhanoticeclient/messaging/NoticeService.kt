@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.text.Html
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.ake.ewhanoticeclient.R
@@ -21,7 +22,7 @@ class NoticeService : FirebaseMessagingService() {
                     if (value == '&') {
                         return SimpleNotice(
                             string.substring(0, index).toInt(),
-                            string.substring(index + 1)
+                            string.substring(index + 1).replace("\n","")
                         )
                     }
                 return null
@@ -35,23 +36,28 @@ class NoticeService : FirebaseMessagingService() {
         val boardRepository = BoardRepository(null, sharedPreferences)
 
         if (boardRepository.getPushStatus()) {
-            val notices = message.data
-            val subscribedBoards = boardRepository.getSubscribedBoardList()
+            try {
+                val notices = message.data
+                val subscribedBoards = boardRepository.getSubscribedBoardList()
 
-            var index = 0
+                var index = 0
 
-            while (true) {
-                val noticeString = notices[index.toString()]
-                noticeString ?: break  // End of notices
+                while (true) {
+                    val noticeString = notices[index.toString()]
+                    noticeString ?: break  // End of notices
 
-                SimpleNotice.getSimpleNoticeFromString(noticeString)?.let {
-                    for (subscribedBoard in subscribedBoards)
-                        if (subscribedBoard.boardId == it.boardId) {
-                            sendNotification(it)
-                            return
-                        }
+                    SimpleNotice.getSimpleNoticeFromString(noticeString)?.let {
+                        for (subscribedBoard in subscribedBoards)
+                            if (subscribedBoard.boardId == it.boardId) {
+                                sendNotification(it)
+                                return
+                            }
+                    }
+                    index += 1
                 }
-                index += 1
+            }
+            catch (e: Exception){
+                Log.d("messaging", e.message)
             }
         }
     }
