@@ -5,11 +5,7 @@ import android.view.View
 import androidx.lifecycle.*
 import com.ake.ewhanoticeclient.database.Board
 import com.ake.ewhanoticeclient.database.BoardRepository
-import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.messaging.FirebaseMessaging
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() {
@@ -46,7 +42,7 @@ class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() 
     }
 
     fun unsubscribeBoard(board: Board) {
-        var subscribedBoards = (_subscribedBoards.value as MutableList).toMutableList()
+        val subscribedBoards = (_subscribedBoards.value as MutableList).toMutableList()
         for (i in 0 until subscribedBoards.size)
             if (subscribedBoards[i].boardId == board.boardId) {
                 subscribedBoards.removeAt(i)

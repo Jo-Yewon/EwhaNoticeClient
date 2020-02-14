@@ -19,8 +19,7 @@ data class Board(
 
     val alias: String
 ): Comparable<Board>{
-
-    override fun toString() = Integer.toString(boardId) +  "," + boardCategory + "," + title + "," + alias
+    override fun toString() = "${boardId},${boardCategory},${title},${alias}"
 
     companion object{
         fun getBoardFromString(boardString:String): Board{
