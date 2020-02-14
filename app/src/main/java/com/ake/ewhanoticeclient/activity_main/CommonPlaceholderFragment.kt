@@ -136,7 +136,7 @@ class CommonPlaceholderFragment : Fragment(), MainActivity.CommonBoardFragment {
                         addRequestHeader("User-Agent", userAgent)
                         setDescription("Downloading file")
 
-                        var fileName = contentDisposition.replace("attachment; filename=", "");
+                        val fileName = contentDisposition.replace("attachment; filename=", "")
                         fileName.apply {
                             replace("\"", "")
                             replace(";", "")
