@@ -27,7 +27,7 @@ class CommonPlaceholderFragment : Fragment(), MainActivity.CommonBoardFragment {
     // For common boards
     companion object {
         private const val commonUrl =
-            "http://www.ewha.ac.kr/mbs/ewhamk/jsp/board/list.jsp?boardId=13259&id=ewhamk_010502000000"
+            "http://www.ewha.ac.kr/ewha/news/notice.do"
         const val DOWNLOAD_PERMISSION_REQ_CODE = 101
 
         @JvmStatic
