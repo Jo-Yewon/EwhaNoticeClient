@@ -38,8 +38,7 @@ class BoardRepository constructor(
     }
 
     fun getSubscribedBoardList(): List<Board> {
-        val boardsString = sharedPreferences.getString(KEY, null)
-        return when (boardsString) {
+        return when (val boardsString = sharedPreferences.getString(KEY, null)) {
             null -> listOf()
             else -> {
                 val list = mutableListOf<Board>()
@@ -74,7 +73,7 @@ class BoardRepository constructor(
     fun setPushStatus(push: Boolean){
         val editor = sharedPreferences.edit()
         editor.putBoolean(PUSH, push)
-        editor.commit()
+        editor.apply()
     }
 
     fun getPushStatus(): Boolean{

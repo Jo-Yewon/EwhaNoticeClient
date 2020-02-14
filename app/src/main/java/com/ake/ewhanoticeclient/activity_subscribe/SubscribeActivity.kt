@@ -28,7 +28,7 @@ class SubscribeActivity : AppCompatActivity() {
             BoardRepository.PREFERENCES_NAME, Context.MODE_PRIVATE)
         val repository = BoardRepository.getInstance(dao, sharedPreferences)
         val factory = SubscribeViewModelFactory(repository)
-        var viewModel = ViewModelProviders.of(this, factory)
+        val viewModel = ViewModelProviders.of(this, factory)
             .get(SubscribeViewModel::class.java)
 
         binding.viewModel = viewModel

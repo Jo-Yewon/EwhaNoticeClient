@@ -43,18 +43,20 @@
                     tool:text="컴퓨터공학과공지사항"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="7dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginBottom="7dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
                     android:textSize="12sp"
                     android:text="@{board.title}"
-                    android:textColor="@color/colorPrimaryDark"></TextView>
+                    android:textColor="@color/colorPrimaryDark"/>
 
                 <ImageButton
+                    android:contentDescription="@string/delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
                     android:background="@drawable/delete"
                     android:onClick="@{() -> clickListener.onClick(board)}">
                 </ImageButton>
