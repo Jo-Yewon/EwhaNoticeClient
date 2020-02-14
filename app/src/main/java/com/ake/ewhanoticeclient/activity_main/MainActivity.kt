@@ -16,7 +16,6 @@ import com.ake.ewhanoticeclient.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
-
     lateinit var binding: ActivityMainBinding
 
     interface CommonBoardFragment{
@@ -46,13 +45,9 @@ class MainActivity : AppCompatActivity() {
         })
 
         // Fragments
-        initPageAdapter()
-        binding.tabs.setupWithViewPager(binding.viewPager)
-    }
-
-    private fun initPageAdapter(){
         val sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager, repository)
         binding.viewPager.adapter = sectionsPagerAdapter
+        binding.tabs.setupWithViewPager(binding.viewPager)
     }
 
     fun setCommon(common: CommonBoardFragment?){
@@ -68,6 +63,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        initPageAdapter()
+        finish()
+        startActivity(getIntent())
     }
 }
