@@ -14,13 +14,18 @@ import com.ake.ewhanoticeclient.database.BoardRepository
 import com.ake.ewhanoticeclient.databinding.ActivityMainBinding
 
 
-class MainActivity : AppCompatActivity() {
 
+class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
 
     interface CommonBoardFragment{
         fun onBackPressed(): Boolean }
     private var common: CommonBoardFragment? = null
+
+    private val dao by lazy { BoardDatabase.getInstance(application).BoardDatabaseDao }
+    private val sharedPreferences by lazy {
+        getSharedPreferences(BoardRepository.PREFERENCES_NAME, Context.MODE_PRIVATE)}
+    private val repository by lazy { BoardRepository.getInstance(dao, sharedPreferences) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         val viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         binding.viewModel = viewModel
 
+        // Observing
         viewModel.navigateToSetting.observe(this, Observer {
             if (it){
                 viewModel.endNavigateToSetting()
@@ -39,14 +45,8 @@ class MainActivity : AppCompatActivity() {
         })
 
         // Fragments
-        val dao = BoardDatabase.getInstance(application).BoardDatabaseDao
-        val sharedPreferences = getSharedPreferences(
-            BoardRepository.PREFERENCES_NAME, Context.MODE_PRIVATE)
-        val repository = BoardRepository.getInstance(dao, sharedPreferences)
-
         val sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager, repository)
         binding.viewPager.adapter = sectionsPagerAdapter
-
         binding.tabs.setupWithViewPager(binding.viewPager)
     }
 
@@ -59,5 +59,11 @@ class MainActivity : AppCompatActivity() {
         // For webView in a common board fragment
         if (common != null && (common as CommonBoardFragment).onBackPressed()) return
         else super.onBackPressed()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        finish()
+        startActivity(getIntent())
     }
 }
