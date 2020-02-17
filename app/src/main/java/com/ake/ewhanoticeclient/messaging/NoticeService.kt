@@ -22,7 +22,7 @@ class NoticeService : FirebaseMessagingService() {
                     if (value == '&') {
                         return SimpleNotice(
                             string.substring(0, index).toInt(),
-                            string.substring(index + 1).replace("\n","")
+                            string.substring(index + 1).replace("\n", "")
                         )
                     }
                 return null
@@ -55,18 +55,16 @@ class NoticeService : FirebaseMessagingService() {
                     }
                     index += 1
                 }
-            }
-            catch (e: Exception){
+            } catch (e: Exception) {
                 Log.d("messaging", e.message)
             }
         }
     }
 
     private fun sendNotification(notice: SimpleNotice) {
-        val intent = Intent(this, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        }
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
+        val pendingIntent =
+            PendingIntent.getActivity(this, 0,
+                Intent(this, MainActivity::class.java), 0)
 
         val builder =
             NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
