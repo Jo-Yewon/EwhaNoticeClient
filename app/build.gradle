@@ -11,8 +11,8 @@ android {
         applicationId "com.ake.ewhanoticeclient"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 7
-        versionName "1.3.3"
+        versionCode 8
+        versionName "1.3.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
