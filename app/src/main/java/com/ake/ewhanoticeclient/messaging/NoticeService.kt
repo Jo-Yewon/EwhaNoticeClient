@@ -14,6 +14,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import java.util.*
 
+
 class NoticeService : FirebaseMessagingService() {
     class SimpleNotice(val boardId: Int, val title: String) {
         companion object {
@@ -56,15 +57,20 @@ class NoticeService : FirebaseMessagingService() {
                     index += 1
                 }
             } catch (e: Exception) {
-                Log.d("messaging", e.message)
+                Log.d("messaging", e.message?:"undefined")
             }
         }
     }
 
     private fun sendNotification(notice: SimpleNotice) {
+        val notificationIntent = Intent(applicationContext, MainActivity::class.java)
+        notificationIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+
         val pendingIntent =
-            PendingIntent.getActivity(this, 0,
-                Intent(this, MainActivity::class.java), 0)
+            PendingIntent.getActivity(
+                this, 0, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
 
         val builder =
             NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
