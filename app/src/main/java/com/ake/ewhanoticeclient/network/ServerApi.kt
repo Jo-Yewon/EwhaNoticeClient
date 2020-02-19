@@ -8,17 +8,20 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface NoticeApi {
+interface ServerApi {
     @GET("/notice/notices/{board_id}/")
     suspend fun getNoticesWithPage(
         @Path("board_id") boardId: Int,
         @Query("page") page: Int
     ): Notices
 
+    @GET("/notice/boards/{board_id}/")
+    suspend fun getURL(@Path("board_id") boardId: Int): BoardURL
+
     companion object {
         private const val BASE_URL = "http://15.165.76.40/"
 
-        fun create(): NoticeApi {
+        fun create(): ServerApi {
             val interceptor = HttpLoggingInterceptor()
             interceptor.level = HttpLoggingInterceptor.Level.BASIC
 
@@ -31,7 +34,7 @@ interface NoticeApi {
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
-                .create(NoticeApi::class.java)
+                .create(ServerApi::class.java)
         }
     }
 }

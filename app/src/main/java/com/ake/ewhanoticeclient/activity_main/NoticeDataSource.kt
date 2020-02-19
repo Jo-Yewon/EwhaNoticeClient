@@ -4,19 +4,16 @@ import android.util.Log
 import androidx.lifecycle.LifecycleObserver
 import androidx.paging.PageKeyedDataSource
 import com.ake.ewhanoticeclient.network.Notice
-import com.ake.ewhanoticeclient.network.NoticeApi
+import com.ake.ewhanoticeclient.network.ServerApi
 import com.ake.ewhanoticeclient.network.Notices
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class NoticeDataSource(
     private val boardId: Int,
     private val viewModelScope: CoroutineScope,
-    private val viewModel: NoticePageViewModel
+    private val viewModel: NoticePageViewModel,
+    private val apiService: ServerApi
 ) : LifecycleObserver, PageKeyedDataSource<Int, Notice>() {
-
-    private val apiService = NoticeApi.create()
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
@@ -24,14 +21,16 @@ class NoticeDataSource(
     ) {
         viewModelScope.launch {
             try {
-                val response = apiService.getNoticesWithPage(boardId, 1)
-                when (response.count) {
-                    0 -> throw Exception("올바르지 않은 게시판에 접근함")
-                    else -> callback.onResult(
-                        response.results,
-                        Notices.getPage(response.previous),
-                        Notices.getPage(response.next)
-                    )
+                withContext(Dispatchers.IO) {
+                    val response = apiService.getNoticesWithPage(boardId, 1)
+                    when (response.count) {
+                        0 -> throw Exception("올바르지 않은 게시판에 접근함")
+                        else -> callback.onResult(
+                            response.results,
+                            Notices.getPage(response.previous),
+                            Notices.getPage(response.next)
+                        )
+                    }
                 }
             } catch (exception: Exception) {
                 Log.e("GetNoticeData", "Failed to fetch data")
@@ -47,13 +46,15 @@ class NoticeDataSource(
     ) {
         viewModelScope.launch {
             try {
-                val response = apiService.getNoticesWithPage(boardId, params.key)
-                when (response.count) {
-                    0 -> throw Exception("올바르지 않은 게시판에 접근함")
-                    else -> callback.onResult(
-                        response.results,
-                        Notices.getPage(response.next)
-                    )
+                withContext(Dispatchers.IO) {
+                    val response = apiService.getNoticesWithPage(boardId, params.key)
+                    when (response.count) {
+                        0 -> throw Exception("올바르지 않은 게시판에 접근함")
+                        else -> callback.onResult(
+                            response.results,
+                            Notices.getPage(response.next)
+                        )
+                    }
                 }
             } catch (exception: Exception) {
                 Log.e("GetNoticeData", "Failed to fetch data")
@@ -69,13 +70,15 @@ class NoticeDataSource(
     ) {
         viewModelScope.launch {
             try {
-                val response = apiService.getNoticesWithPage(boardId, params.key)
-                when (response.count) {
-                    0 -> throw Exception("올바르지 않은 게시판에 접근함")
-                    else -> callback.onResult(
-                        response.results,
-                        Notices.getPage(response.previous)
-                    )
+                withContext(Dispatchers.IO) {
+                    val response = apiService.getNoticesWithPage(boardId, params.key)
+                    when (response.count) {
+                        0 -> throw Exception("올바르지 않은 게시판에 접근함")
+                        else -> callback.onResult(
+                            response.results,
+                            Notices.getPage(response.previous)
+                        )
+                    }
                 }
             } catch (exception: Exception) {
                 Log.e("GetNoticeData", "Failed to fetch data")

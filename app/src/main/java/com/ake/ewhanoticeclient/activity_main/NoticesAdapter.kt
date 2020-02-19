@@ -6,31 +6,68 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.ake.ewhanoticeclient.database.Board
+import com.ake.ewhanoticeclient.databinding.NoticeFooterBinding
 import com.ake.ewhanoticeclient.databinding.NoticeItemBinding
 import com.ake.ewhanoticeclient.network.Notice
+import java.lang.Exception
 
-class NoticesAdapter(private val clickListener: NoticeClickListener) :
-    PagedListAdapter<Notice, NoticesAdapter.NoticeViewHolder>(NoticeDiffCallback()) {
+class NoticesAdapter(
+    private val clickListener: NoticeClickListener,
+    private val footerClickListener: FooterClickListener
+) :
+    PagedListAdapter<Notice, RecyclerView.ViewHolder>(NoticeDiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoticeViewHolder =
-        NoticeViewHolder.from(parent)
+    companion object {
+        private const val TYPE_ITEM = 0
+        private const val TYPE_FOOTER = 1
+    }
 
-    override fun onBindViewHolder(holder: NoticeViewHolder, position: Int) {
-        val res = holder.itemView.context.resources
-        val item = getItem(position)
-        item?.let { holder.bind(item, res, clickListener) }
+    override fun getItemViewType(position: Int) =
+        if (position == itemCount - 1) TYPE_FOOTER else TYPE_ITEM
+
+    override fun getItemCount() = super.getItemCount() + 1 //For footer
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
+        = when (viewType) {
+            TYPE_ITEM -> NoticeViewHolder.from(parent)
+            else -> FooterViewHolder.from(parent, footerClickListener)
+        }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is NoticeViewHolder) {
+            val res = holder.itemView.context.resources
+            val item = getItem(position)
+            item?.let {
+                holder.bind(item, res, clickListener)
+            }
+        }
+    }
+
+    class FooterViewHolder(binding: NoticeFooterBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        companion object{
+            fun from(parent: ViewGroup, clickListener: FooterClickListener): FooterViewHolder{
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = NoticeFooterBinding
+                    .inflate(layoutInflater, parent, false)
+                binding.clickListener = clickListener
+                return FooterViewHolder(binding)
+            }
+        }
     }
 
     class NoticeViewHolder(private val binding: NoticeItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Notice, res: Resources, clickListener: NoticeClickListener){
+        fun bind(item: Notice, res: Resources, clickListener: NoticeClickListener) {
             binding.notice = item
             binding.clickListener = clickListener
         }
 
-        companion object{
-            fun from(parent: ViewGroup): NoticeViewHolder{
+        companion object {
+            fun from(parent: ViewGroup): NoticeViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = NoticeItemBinding
                     .inflate(layoutInflater, parent, false)
