@@ -42,27 +42,29 @@ class NoticeService : FirebaseMessagingService() {
                 val subscribedBoards = boardRepository.getSubscribedBoardList()
 
                 var index = 0
-
+                val subscribedNotices = mutableListOf<SimpleNotice>()
                 while (true) {
                     val noticeString = notices[index.toString()]
                     noticeString ?: break  // End of notices
 
                     SimpleNotice.getSimpleNoticeFromString(noticeString)?.let {
                         for (subscribedBoard in subscribedBoards)
-                            if (subscribedBoard.boardId == it.boardId) {
-                                sendNotification(it)
-                                return
-                            }
+                            if (subscribedBoard.boardId == it.boardId)
+                                subscribedNotices.add(it)
                     }
                     index += 1
                 }
+
+                if (subscribedNotices.isNotEmpty())
+                    sendNotification(subscribedNotices)
+
             } catch (e: Exception) {
-                Log.d("messaging", e.message?:"undefined")
+                Log.d("messaging", e.message ?: "undefined")
             }
         }
     }
 
-    private fun sendNotification(notice: SimpleNotice) {
+    private fun sendNotification(notices: List<SimpleNotice>) {
         val notificationIntent = Intent(applicationContext, MainActivity::class.java)
         notificationIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
 
@@ -83,10 +85,9 @@ class NoticeService : FirebaseMessagingService() {
                         )
                     )
                 )
-                .setContentText("\"${notice.title}\"")
                 .setStyle(
                     NotificationCompat.BigTextStyle().bigText(
-                        "\"${notice.title}\" 외 여러 건의 새로운 공지사항이 있습니다."
+                        "${notices.map { it.title }.joinToString(",")} 등의 새로운 공지사항이 있습니다."
                     )
                 )
                 .setSmallIcon(R.drawable.notification_icon)
