@@ -5,7 +5,7 @@
 
         <variable
             name="clickListener"
-            type="com.ake.ewhanoticeclient.activity_main.FooterClickListener" />
+            type="com.ake.ewhanoticeclient.activity_main.HeaderFooterClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="5dp"
                 android:text="@string/header_text"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"

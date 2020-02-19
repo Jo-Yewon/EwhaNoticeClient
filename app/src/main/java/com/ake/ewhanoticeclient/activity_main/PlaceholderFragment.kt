@@ -47,7 +47,7 @@ class PlaceholderFragment(
         binding.viewModel = pageViewModel
 
         val noticesAdapter = NoticesAdapter(NoticeClickListener { pageViewModel.showNotice(it) },
-            FooterClickListener { pageViewModel.expandBoard() })
+            HeaderFooterClickListener { pageViewModel.expandBoard() })
         binding.noticesRecyclerView.adapter = noticesAdapter
 
         pageViewModel.notices.observe(viewLifecycleOwner, Observer {

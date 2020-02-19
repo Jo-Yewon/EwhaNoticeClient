@@ -34,5 +34,6 @@
     <string name="delete">delete</string>
     <string name="setting_button">setting_button</string>
     <string name="footer_text">더 이전의 공지사항을 확인하시려면 클릭하세요.\n웹 사이트로 연결됩니다.</string>
-    <string name="header_text">웹 사이트로 이동하여 공지사항 확인하기</string>
+    <string name="header_text">웹 사이트로 이동하여 더 정확한 공지사항 확인하기</string>
+    <string name="expand">expand</string>
 </resources>
