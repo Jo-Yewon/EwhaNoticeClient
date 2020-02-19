@@ -40,10 +40,16 @@ class NoticePageViewModel(
     }
 
     private var _expandBoard = MutableLiveData<String>()
-    val expandBoard = _expandBoard
+    val expandBoard: LiveData<String>
+        get() = _expandBoard
 
     private var _toast = MutableLiveData<String>()
-    val toast = _toast
+    val toast: LiveData<String>
+        get() = _toast
+
+    private var _scrollTop = MutableLiveData<Boolean>()
+    val scrollTop: LiveData<Boolean>
+        get() = _scrollTop
 
     private lateinit var dataSource: DataSource<Int, Notice>
     private val config by lazy {
@@ -83,17 +89,14 @@ class NoticePageViewModel(
                 override fun onItemAtFrontLoaded(itemAtFront: Notice) {
                     super.onItemAtFrontLoaded(itemAtFront)
                     endLoad()
+                    startScrollTop()
                 }
             })
     }
 
-    fun showNotice(notice: Notice) {
-        _url.value = notice.url
-    }
+    fun showNotice(notice: Notice) { _url.value = notice.url }
 
-    fun endShowNotice() {
-        _url.value = null
-    }
+    fun endShowNotice() { _url.value = null }
 
     fun refreshNotice() {
         notices = initializedPagedListBuilder(config).build()
@@ -127,4 +130,8 @@ class NoticePageViewModel(
     fun endExpand() { _expandBoard.value = null }
 
     fun endToast() { _toast.value = null }
+
+    fun startScrollTop() { _scrollTop.value = true }
+
+    fun endScrollTop(){ _scrollTop.value = false }
 }

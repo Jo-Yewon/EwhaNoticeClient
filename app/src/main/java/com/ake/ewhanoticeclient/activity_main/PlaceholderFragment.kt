@@ -17,6 +17,7 @@ import com.ake.ewhanoticeclient.network.ServerApi
 import android.content.Intent
 import android.webkit.URLUtil
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 
 
 class PlaceholderFragment(
@@ -80,6 +81,16 @@ class PlaceholderFragment(
                 Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
             }
         })
+
+        //Scroll top
+        pageViewModel.scrollTop.observe(viewLifecycleOwner, Observer {
+            if (it){
+                pageViewModel.endScrollTop()
+                (binding.noticesRecyclerView.layoutManager as LinearLayoutManager)
+                    .scrollToPositionWithOffset(0, 0)
+            }
+        })
+
         return binding.root
     }
 
