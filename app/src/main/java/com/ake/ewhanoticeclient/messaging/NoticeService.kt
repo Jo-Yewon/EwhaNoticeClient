@@ -49,8 +49,10 @@ class NoticeService : FirebaseMessagingService() {
 
                     SimpleNotice.getSimpleNoticeFromString(noticeString)?.let {
                         for (subscribedBoard in subscribedBoards)
-                            if (subscribedBoard.boardId == it.boardId)
+                            if (subscribedBoard.boardId == it.boardId) {
                                 subscribedNotices.add(it)
+                                break
+                            }
                     }
                     index += 1
                 }
@@ -87,7 +89,7 @@ class NoticeService : FirebaseMessagingService() {
                 )
                 .setStyle(
                     NotificationCompat.BigTextStyle().bigText(
-                        "${notices.map { it.title }.joinToString(",")} 등의 새로운 공지사항이 있습니다."
+                        "${notices.map { "\"${it.title}\"" }.joinToString(",")} 등의 새로운 공지사항이 있습니다."
                     )
                 )
                 .setSmallIcon(R.drawable.notification_icon)
@@ -96,7 +98,7 @@ class NoticeService : FirebaseMessagingService() {
                 .setAutoCancel(true)
 
         with(NotificationManagerCompat.from(this)) {
-            notify(1, builder.build())
+            notify(notices[0].boardId, builder.build())
         }
     }
 }
