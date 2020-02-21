@@ -1,6 +1,7 @@
 package com.ake.ewhanoticeclient.network
 
 import android.util.Log
+import com.google.gson.annotations.SerializedName
 import java.util.regex.Pattern
 
 data class Notice(
@@ -34,3 +35,8 @@ data class Notices(
         }
     }
 }
+
+data class BoardURL(
+    @SerializedName("base_url") val baseUrl: String,
+    @SerializedName("next_url") val nextUrl: String
+)

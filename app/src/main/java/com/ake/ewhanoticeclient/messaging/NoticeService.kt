@@ -14,6 +14,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import java.util.*
 
+
 class NoticeService : FirebaseMessagingService() {
     class SimpleNotice(val boardId: Int, val title: String) {
         companion object {
@@ -22,7 +23,7 @@ class NoticeService : FirebaseMessagingService() {
                     if (value == '&') {
                         return SimpleNotice(
                             string.substring(0, index).toInt(),
-                            string.substring(index + 1).replace("\n","")
+                            string.substring(index + 1).replace("\n", "")
                         )
                     }
                 return null
@@ -41,7 +42,7 @@ class NoticeService : FirebaseMessagingService() {
                 val subscribedBoards = boardRepository.getSubscribedBoardList()
 
                 var index = 0
-
+                val subscribedNotices = mutableListOf<SimpleNotice>()
                 while (true) {
                     val noticeString = notices[index.toString()]
                     noticeString ?: break  // End of notices
@@ -49,24 +50,31 @@ class NoticeService : FirebaseMessagingService() {
                     SimpleNotice.getSimpleNoticeFromString(noticeString)?.let {
                         for (subscribedBoard in subscribedBoards)
                             if (subscribedBoard.boardId == it.boardId) {
-                                sendNotification(it)
-                                return
+                                subscribedNotices.add(it)
+                                break
                             }
                     }
                     index += 1
                 }
-            }
-            catch (e: Exception){
-                Log.d("messaging", e.message)
+
+                if (subscribedNotices.isNotEmpty())
+                    sendNotification(subscribedNotices)
+
+            } catch (e: Exception) {
+                Log.d("messaging", e.message ?: "undefined")
             }
         }
     }
 
-    private fun sendNotification(notice: SimpleNotice) {
-        val intent = Intent(this, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        }
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
+    private fun sendNotification(notices: List<SimpleNotice>) {
+        val notificationIntent = Intent(applicationContext, MainActivity::class.java)
+        notificationIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+
+        val pendingIntent =
+            PendingIntent.getActivity(
+                this, 0, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
 
         val builder =
             NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
@@ -79,10 +87,9 @@ class NoticeService : FirebaseMessagingService() {
                         )
                     )
                 )
-                .setContentText("\"${notice.title}\"")
                 .setStyle(
                     NotificationCompat.BigTextStyle().bigText(
-                        "\"${notice.title}\" 외 여러 건의 새로운 공지사항이 있습니다."
+                        "${notices.map { "\"${it.title}\"" }.joinToString(",")} 등의 새로운 공지사항이 있습니다."
                     )
                 )
                 .setSmallIcon(R.drawable.notification_icon)
@@ -91,7 +98,7 @@ class NoticeService : FirebaseMessagingService() {
                 .setAutoCancel(true)
 
         with(NotificationManagerCompat.from(this)) {
-            notify(1, builder.build())
+            notify(notices[0].boardId, builder.build())
         }
     }
 }

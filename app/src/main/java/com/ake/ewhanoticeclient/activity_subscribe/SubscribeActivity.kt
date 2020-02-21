@@ -2,9 +2,9 @@ package com.ake.ewhanoticeclient.activity_subscribe
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.SearchView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -13,7 +13,6 @@ import com.ake.ewhanoticeclient.activity_main.MainActivity
 import com.ake.ewhanoticeclient.database.BoardDatabase
 import com.ake.ewhanoticeclient.database.BoardRepository
 import com.ake.ewhanoticeclient.databinding.ActivitySubscribeBinding
-import com.google.android.datatransport.runtime.scheduling.jobscheduling.SchedulerConfig
 
 class SubscribeActivity : AppCompatActivity() {
 
