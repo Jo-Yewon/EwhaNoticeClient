@@ -83,15 +83,14 @@ class NoticeService : FirebaseMessagingService() {
                         String.format(
                             Locale.getDefault(),
                             "<strong>%s</strong>",
-                            "새로운 공지사항"
+                            "[이화여자대학교]새로운 공지사항이 있습니다."
                         )
                     )
                 )
-                .setStyle(
-                    NotificationCompat.BigTextStyle().bigText(
-                        "${notices.map { "\"${it.title}\"" }.joinToString(",")} 등의 새로운 공지사항이 있습니다."
-                    )
-                )
+                .setStyle(NotificationCompat.InboxStyle().also {
+                    for (notice in notices)
+                        it.addLine(notice.title)
+                })
                 .setSmallIcon(R.drawable.notification_icon)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
