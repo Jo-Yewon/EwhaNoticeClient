@@ -3,6 +3,7 @@ package com.ake.ewhanoticeclient.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 import java.util.*
 
 @Entity(tableName = "board_table")
@@ -18,7 +19,7 @@ data class Board(
     val title: String,
 
     val alias: String
-): Comparable<Board>{
+): Comparable<Board>, Serializable{
     override fun toString() = "${boardId},${boardCategory},${title},${alias}"
 
     companion object{

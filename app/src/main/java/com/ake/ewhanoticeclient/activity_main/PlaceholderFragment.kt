@@ -20,18 +20,18 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 
 
-class PlaceholderFragment(
-    private val board: Board,
-    private val apiService: ServerApi
-) : Fragment() {
+class PlaceholderFragment: Fragment() {
 
     private lateinit var pageViewModel: NoticePageViewModel
     private lateinit var binding: FragmentNoticesBinding
 
     private lateinit var customTabsIntent: CustomTabsIntent
+    private val apiService by lazy { ServerApi.create() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val board = arguments?.getSerializable("board") as Board
 
         val factory = NoticePageViewModelFactory(board, apiService)
         pageViewModel = ViewModelProviders.of(this, factory)
@@ -84,7 +84,7 @@ class PlaceholderFragment(
 
         //Scroll top
         pageViewModel.scrollTop.observe(viewLifecycleOwner, Observer {
-            if (it){
+            if (it) {
                 pageViewModel.endScrollTop()
                 (binding.noticesRecyclerView.layoutManager as LinearLayoutManager)
                     .scrollToPositionWithOffset(0, 0)
@@ -96,9 +96,12 @@ class PlaceholderFragment(
 
     companion object {
         @JvmStatic
-        fun newInstance(board: Board, apiService: ServerApi): PlaceholderFragment {
-            return PlaceholderFragment(board, apiService)
-        }
+        fun newInstance(board: Board): PlaceholderFragment =
+            PlaceholderFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable("board", board)
+                }
+            }
     }
 
     private fun initCustomTabs() {

@@ -13,12 +13,11 @@ class SectionsPagerAdapter(
 ) : FragmentPagerAdapter(fm) {
 
     private val subscribedBoards by lazy { boardRepository.getSubscribedBoardList() }
-    private val apiService by lazy { ServerApi.create() }
 
     override fun getItem(position: Int): Fragment =
         subscribedBoards[position].let{
             if (it.boardId == 13259) CommonPlaceholderFragment.newInstance()
-            else PlaceholderFragment.newInstance(it, apiService) }
+            else PlaceholderFragment.newInstance(it) }
 
     override fun getPageTitle(position: Int) = subscribedBoards[position].alias
 

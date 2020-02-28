@@ -14,6 +14,6 @@ class MainViewModel: ViewModel(){
     }
 
     fun endNavigateToSetting(){
-        _navigateToSetting.value
+        _navigateToSetting.value = false
     }
 }
