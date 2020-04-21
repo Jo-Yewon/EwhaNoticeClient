@@ -9,15 +9,13 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.ake.ewhanoticeclient.R
-import com.ake.ewhanoticeclient.database.Board
 import com.ake.ewhanoticeclient.databinding.FragmentNoticesBinding
-import com.ake.ewhanoticeclient.network.ServerApi
 import android.content.Intent
 import android.webkit.URLUtil
 import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.ViewModelProvider
+import com.ake.ewhanoticeclient.domain.Board
 
 
 class PlaceholderFragment: Fragment() {
@@ -26,15 +24,14 @@ class PlaceholderFragment: Fragment() {
     private lateinit var binding: FragmentNoticesBinding
 
     private lateinit var customTabsIntent: CustomTabsIntent
-    private val apiService by lazy { ServerApi.create() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val board = arguments?.getSerializable("board") as Board
+        val board = arguments?.getParcelable<Board>("board")
 
-        val factory = NoticePageViewModelFactory(board, apiService)
-        pageViewModel = ViewModelProviders.of(this, factory)
+        val factory = NoticePageViewModelFactory(board!!, activity!!.application)
+        pageViewModel = ViewModelProvider(this, factory)
             .get(NoticePageViewModel::class.java)
 
         initCustomTabs()
@@ -47,15 +44,12 @@ class PlaceholderFragment: Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = pageViewModel
 
-        val noticesAdapter = NoticesAdapter(NoticeClickListener { pageViewModel.showNotice(it) },
+        val noticesAdapter = NoticesAdapter(
+            NoticeClickListener { pageViewModel.showNotice(it) },
             HeaderFooterClickListener { pageViewModel.expandBoard() })
         binding.noticesRecyclerView.adapter = noticesAdapter
 
-        pageViewModel.notices.observe(viewLifecycleOwner, Observer {
-            it?.let { noticesAdapter.submitList(it) }
-        })
-
-        // Show notice with ctt
+        // Show notice with chrome custom tabs
         pageViewModel.url.observe(viewLifecycleOwner, Observer {
             it?.let {
                 pageViewModel.endShowNotice()
@@ -82,15 +76,6 @@ class PlaceholderFragment: Fragment() {
             }
         })
 
-        //Scroll top
-        pageViewModel.scrollTop.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                pageViewModel.endScrollTop()
-                (binding.noticesRecyclerView.layoutManager as LinearLayoutManager)
-                    .scrollToPositionWithOffset(0, 0)
-            }
-        })
-
         return binding.root
     }
 
@@ -99,7 +84,7 @@ class PlaceholderFragment: Fragment() {
         fun newInstance(board: Board): PlaceholderFragment =
             PlaceholderFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable("board", board)
+                    putParcelable("board", board)
                 }
             }
     }

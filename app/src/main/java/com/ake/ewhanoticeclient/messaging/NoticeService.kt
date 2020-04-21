@@ -9,37 +9,26 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.ake.ewhanoticeclient.R
 import com.ake.ewhanoticeclient.activity_main.MainActivity
-import com.ake.ewhanoticeclient.database.BoardRepository
+import com.ake.ewhanoticeclient.database.BoardDatabase
+import com.ake.ewhanoticeclient.domain.SimpleNotice
+import com.ake.ewhanoticeclient.repositories.BoardRepository
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import java.util.*
 
 
 class NoticeService : FirebaseMessagingService() {
-    class SimpleNotice(val boardId: Int, val title: String) {
-        companion object {
-            fun getSimpleNoticeFromString(string: String): SimpleNotice? {
-                for ((index, value) in string.withIndex())
-                    if (value == '&') {
-                        return SimpleNotice(
-                            string.substring(0, index).toInt(),
-                            string.substring(index + 1).replace("\n", "")
-                        )
-                    }
-                return null
-            }
-        }
-    }
-
     override fun onMessageReceived(message: RemoteMessage) {
         val sharedPreferences =
             getSharedPreferences(BoardRepository.PREFERENCES_NAME, Context.MODE_PRIVATE)
-        val boardRepository = BoardRepository(null, sharedPreferences)
+        val dao = BoardDatabase.getInstance(application).boardDatabaseDao
+        val boardRepository = BoardRepository(dao, sharedPreferences)
 
-        if (boardRepository.getPushStatus()) {
+        if (Messaging(sharedPreferences).getPushStatus()) {  // Check push-on
             try {
+                // Check subscribed notice
                 val notices = message.data
-                val subscribedBoards = boardRepository.getSubscribedBoardList()
+                val subscribedBoardsId = boardRepository.getSubscribedBoardList().map { it.boardId }
 
                 var index = 0
                 val subscribedNotices = mutableListOf<SimpleNotice>()
@@ -48,11 +37,8 @@ class NoticeService : FirebaseMessagingService() {
                     noticeString ?: break  // End of notices
 
                     SimpleNotice.getSimpleNoticeFromString(noticeString)?.let {
-                        for (subscribedBoard in subscribedBoards)
-                            if (subscribedBoard.boardId == it.boardId) {
-                                subscribedNotices.add(it)
-                                break
-                            }
+                        if (it.boardId in subscribedBoardsId)
+                            subscribedNotices.add(it)
                     }
                     index += 1
                 }

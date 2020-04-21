@@ -6,7 +6,7 @@
     <data>
         <variable
             name="notice"
-            type="com.ake.ewhanoticeclient.network.Notice" />
+            type="com.ake.ewhanoticeclient.domain.Notice" />
 
         <variable
             name="clickListener"

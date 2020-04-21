@@ -6,13 +6,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.ake.ewhanoticeclient.R
 import com.ake.ewhanoticeclient.activity_setting.SettingsActivity
 import com.ake.ewhanoticeclient.database.BoardDatabase
-import com.ake.ewhanoticeclient.database.BoardRepository
+import com.ake.ewhanoticeclient.repositories.BoardRepository
 import com.ake.ewhanoticeclient.databinding.ActivityMainBinding
-
+import com.google.android.material.tabs.TabLayoutMediator
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,10 +22,10 @@ class MainActivity : AppCompatActivity() {
         fun onBackPressed(): Boolean }
     private var common: CommonBoardFragment? = null
 
-    private val dao by lazy { BoardDatabase.getInstance(application).BoardDatabaseDao }
+    private val dao by lazy { BoardDatabase.getInstance(application).boardDatabaseDao }
     private val sharedPreferences by lazy {
         getSharedPreferences(BoardRepository.PREFERENCES_NAME, Context.MODE_PRIVATE)}
-    private val repository by lazy { BoardRepository.getInstance(dao, sharedPreferences) }
+    private val boardRepository by lazy { BoardRepository.getInstance(dao, sharedPreferences) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
 
-        val viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         binding.viewModel = viewModel
 
         // Observing
@@ -44,10 +44,12 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        // Fragments
-        val sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager, repository)
+        // Tab + ViewPager
+        val sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager, lifecycle, boardRepository)
         binding.viewPager.adapter = sectionsPagerAdapter
-        binding.tabs.setupWithViewPager(binding.viewPager)
+        TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
+            tab.text = sectionsPagerAdapter.getItemAlias(position)
+        }.attach()
     }
 
     fun setCommon(common: CommonBoardFragment?){

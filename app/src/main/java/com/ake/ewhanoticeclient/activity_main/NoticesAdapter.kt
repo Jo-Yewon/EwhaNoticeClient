@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ake.ewhanoticeclient.databinding.NoticeFooterBinding
 import com.ake.ewhanoticeclient.databinding.NoticeHeaderBinding
 import com.ake.ewhanoticeclient.databinding.NoticeItemBinding
-import com.ake.ewhanoticeclient.network.Notice
+import com.ake.ewhanoticeclient.domain.Notice
 
 class NoticesAdapter(
     private val clickListener: NoticeClickListener,

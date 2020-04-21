@@ -3,8 +3,9 @@ package com.ake.ewhanoticeclient.activity_subscribe
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.*
-import com.ake.ewhanoticeclient.database.Board
-import com.ake.ewhanoticeclient.database.BoardRepository
+import com.ake.ewhanoticeclient.database.asDomainModel
+import com.ake.ewhanoticeclient.domain.Board
+import com.ake.ewhanoticeclient.repositories.BoardRepository
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
 
@@ -36,7 +37,8 @@ class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() 
     private fun initBoards() {
         viewModelScope.launch {
             _subscribedBoards.value = repository.getSubscribedBoardList()
-            allBoards = repository.getBoardsFromDatabase()
+            // TODO dispatch
+            allBoards = repository.getBoardsFromDatabase().asDomainModel()
             _bottomBoards.value = allBoards
         }
     }
@@ -74,13 +76,13 @@ class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() 
     fun searchBoardByKeyword(keyword: String?) {
         viewModelScope.launch {
             when (keyword) {
-                null -> closeSearch()
-                else -> _bottomBoards.value = repository.searchBoardsFromDatabase(keyword)
+                null -> resetSearch()
+                else -> _bottomBoards.value = repository.searchBoardsFromDatabase(keyword).asDomainModel()
             }
         }
     }
 
-    fun closeSearch() {
+    fun resetSearch() {
         _bottomBoards.value = allBoards
     }
 
@@ -92,6 +94,7 @@ class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() 
     private fun subscribeBoards() {
         val firebaseMessaging = FirebaseMessaging.getInstance()
         viewModelScope.launch {
+            //TODO dispatch
             for (topic in repository.getAllTopics())
                 firebaseMessaging.unsubscribeFromTopic(topic)
             for (board in _subscribedBoards.value!!)

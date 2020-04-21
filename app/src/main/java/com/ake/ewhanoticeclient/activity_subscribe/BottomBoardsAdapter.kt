@@ -6,8 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.ake.ewhanoticeclient.database.Board
 import com.ake.ewhanoticeclient.databinding.BoardItemBinding
+import com.ake.ewhanoticeclient.domain.Board
+
 
 class BottomBoardsAdapter(val clickListener: BoardClickListener):
     ListAdapter<Board, BottomBoardsAdapter.BoardViewHolder>(BoardDiffCallback()) {
