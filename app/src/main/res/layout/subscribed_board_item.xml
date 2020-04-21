@@ -6,7 +6,7 @@
     <data>
         <variable
             name="board"
-            type="com.ake.ewhanoticeclient.database.Board" />
+            type="com.ake.ewhanoticeclient.domain.Board" />
 
         <variable
             name="clickListener"

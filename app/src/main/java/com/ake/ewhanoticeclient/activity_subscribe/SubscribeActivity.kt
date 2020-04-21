@@ -7,11 +7,11 @@ import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.ake.ewhanoticeclient.R
 import com.ake.ewhanoticeclient.activity_main.MainActivity
 import com.ake.ewhanoticeclient.database.BoardDatabase
-import com.ake.ewhanoticeclient.database.BoardRepository
+import com.ake.ewhanoticeclient.repositories.BoardRepository
 import com.ake.ewhanoticeclient.databinding.ActivitySubscribeBinding
 
 class SubscribeActivity : AppCompatActivity() {
@@ -22,12 +22,12 @@ class SubscribeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_subscribe)
 
-        val dao = BoardDatabase.getInstance(application).BoardDatabaseDao
+        val dao = BoardDatabase.getInstance(application).boardDatabaseDao
         val sharedPreferences = getSharedPreferences(
             BoardRepository.PREFERENCES_NAME, Context.MODE_PRIVATE)
         val repository = BoardRepository.getInstance(dao, sharedPreferences)
         val factory = SubscribeViewModelFactory(repository)
-        val viewModel = ViewModelProviders.of(this, factory)
+        val viewModel = ViewModelProvider(this, factory)
             .get(SubscribeViewModel::class.java)
 
         binding.viewModel = viewModel
@@ -39,30 +39,24 @@ class SubscribeActivity : AppCompatActivity() {
                 viewModel.unsubscribeBoard(board)
             })
         binding.subscribedBoardList.adapter = subscribedBoardsListAdapter
-        viewModel.subscribedBoards.observe(this, Observer {
-            it?.let { subscribedBoardsListAdapter.submitList(it) }
-        })
 
-        //BoardList
+        // BoardList
         val bottomBoardsListAdapter = BottomBoardsAdapter(
             BoardClickListener { board ->
                 viewModel.subscribeBoard(board)
             })
         binding.unsubscribedBoardList.adapter = bottomBoardsListAdapter
-        viewModel.bottomBoards.observe(this, Observer {
-            it?.let { bottomBoardsListAdapter.submitList(it) }
-        })
 
         //Search
         binding.searchViewBoard.apply {
             setOnQueryTextListener(BoardOnQueryTextListener(viewModel))
             setOnCloseListener {
-                viewModel.closeSearch()
+                viewModel.resetSearch()
                 true
             }
         }
 
-        //Navigate
+        // Navigate
         viewModel.navigateToMainActivity.observe(this, Observer {
             if (it){ startActivity(Intent(this, MainActivity::class.java)) }
         })
@@ -76,7 +70,7 @@ class SubscribeActivity : AppCompatActivity() {
         }
 
         override fun onQueryTextChange(p0: String?): Boolean {
-            if (p0 == "") viewModel.closeSearch()
+            if (p0 == "") viewModel.resetSearch()
             return true
         }
     }

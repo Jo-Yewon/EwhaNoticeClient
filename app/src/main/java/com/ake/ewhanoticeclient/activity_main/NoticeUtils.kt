@@ -4,15 +4,16 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import com.ake.ewhanoticeclient.network.Notice
+import androidx.paging.PagedList
+import androidx.recyclerview.widget.RecyclerView
+import com.ake.ewhanoticeclient.domain.Notice
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NoticeBindingUtils {
+class NoticeDateUtils {
     companion object {
         private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
-        // 새로운 공지사항 판단 기준.
-        const val NEW_STANDARD = 2
+        const val NEW_STANDARD = 2 // 새로운 공지사항 판단 기준.
 
         fun getDateFromString(string: String): Date {
             return simpleDateFormat.parse(string)
@@ -38,19 +39,23 @@ fun TextView.setDate(item: Notice) {
 }
 
 @BindingAdapter("isNewOne")
-fun TextView.setIsNewOne(item: Notice) {
-    val diffDate = Date().time - NoticeBindingUtils.getDateFromString(item.date).time
+fun ImageButton.setIsNewOne(item: Notice) {
+    val diffDate = Date().time - NoticeDateUtils.getDateFromString(item.date).time
     visibility =
-        if (diffDate / (60 * 60 * 24 * 1000) < NoticeBindingUtils.NEW_STANDARD) View.INVISIBLE
-        else View.VISIBLE
-
+        if (diffDate / (60 * 60 * 24 * 1000) < NoticeDateUtils.NEW_STANDARD) View.VISIBLE
+        else View.INVISIBLE
 }
 
 @BindingAdapter("isNewOne")
-fun ImageButton.setIsNewOne(item: Notice) {
-    val diffDate = Date().time - NoticeBindingUtils.getDateFromString(item.date).time
+fun TextView.setIsNewOne(item: Notice) {
+    val diffDate = Date().time - NoticeDateUtils.getDateFromString(item.date).time
     visibility =
-        if (diffDate / (60 * 60 * 24 * 1000) < NoticeBindingUtils.NEW_STANDARD) View.VISIBLE
-        else View.INVISIBLE
+        if (diffDate / (60 * 60 * 24 * 1000) < NoticeDateUtils.NEW_STANDARD) View.INVISIBLE
+        else View.VISIBLE
+}
 
+@BindingAdapter("notices")
+fun bindNoticesRecyclerView(recyclerView: RecyclerView, data: PagedList<Notice>?){
+    val adapter = recyclerView.adapter as NoticesAdapter
+    adapter.submitList(data)
 }

@@ -2,29 +2,24 @@ package com.ake.ewhanoticeclient.activity_main
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager.widget.PagerAdapter
-import com.ake.ewhanoticeclient.database.BoardRepository
-import com.ake.ewhanoticeclient.network.ServerApi
+import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.ake.ewhanoticeclient.repositories.BoardRepository
 
 class SectionsPagerAdapter(
     fm: FragmentManager,
+    l: Lifecycle,
     boardRepository: BoardRepository
-) : FragmentPagerAdapter(fm) {
+) : FragmentStateAdapter(fm, l) {
 
     private val subscribedBoards by lazy { boardRepository.getSubscribedBoardList() }
 
-    override fun getItem(position: Int): Fragment =
+    fun getItemAlias(position: Int) = subscribedBoards[position].alias
+
+    override fun getItemCount() = subscribedBoards.size
+
+    override fun createFragment(position: Int): Fragment =
         subscribedBoards[position].let{
             if (it.boardId == 13259) CommonPlaceholderFragment.newInstance()
             else PlaceholderFragment.newInstance(it) }
-
-    override fun getPageTitle(position: Int) = subscribedBoards[position].alias
-
-    override fun getCount() = subscribedBoards.size
-
-    override fun getItemPosition(`object`: Any): Int
-    {
-        return PagerAdapter.POSITION_NONE
-    }
 }

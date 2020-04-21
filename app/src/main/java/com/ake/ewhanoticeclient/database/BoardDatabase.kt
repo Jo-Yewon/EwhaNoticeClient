@@ -4,10 +4,27 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.Dao
+import androidx.room.Query
 
-@Database(entities = [Board::class], version = 5, exportSchema = false)
+@Dao
+interface BoardDatabaseDao{
+    @Query("select * from board_table")
+    fun getAllBoards(): List<DatabaseBoard>
+
+    @Query("select * from board_table where board_id = :boardId")
+    fun getBoard(boardId:Int): DatabaseBoard
+
+    @Query("select * from board_table where title like :keyword")
+    fun searchBoardByKeyword(keyword: String): List<DatabaseBoard>
+
+    @Query("select distinct board_category from board_table")
+    fun getAllTopics(): List<String>
+}
+
+@Database(entities = [DatabaseBoard::class], version = 5, exportSchema = false)
 abstract class BoardDatabase: RoomDatabase(){
-    abstract val BoardDatabaseDao: BoardDatabaseDao
+    abstract val boardDatabaseDao: BoardDatabaseDao
 
     companion object{
         @Volatile

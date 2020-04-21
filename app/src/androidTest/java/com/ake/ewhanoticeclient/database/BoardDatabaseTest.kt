@@ -21,7 +21,7 @@ class BoardDatabaseTest {
             .createFromAsset("boards.db")
             .allowMainThreadQueries()
             .build()
-        boardDao = db.BoardDatabaseDao
+        boardDao = db.boardDatabaseDao
     }
 
     @After

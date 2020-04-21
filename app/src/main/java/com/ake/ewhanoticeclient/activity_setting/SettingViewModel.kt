@@ -3,9 +3,9 @@ package com.ake.ewhanoticeclient.activity_setting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ake.ewhanoticeclient.database.BoardRepository
+import com.ake.ewhanoticeclient.messaging.Messaging
 
-class SettingViewModel(private val boardRepository: BoardRepository): ViewModel(){
+class SettingViewModel(private val messaging: Messaging): ViewModel(){
 
     private val _isPushAlarm = MutableLiveData<Boolean>()
     val isPushAlarm: LiveData<Boolean>
@@ -17,7 +17,7 @@ class SettingViewModel(private val boardRepository: BoardRepository): ViewModel(
 
     init {
         _navigate.value = null
-        _isPushAlarm.value = boardRepository.getPushStatus()
+        _isPushAlarm.value = messaging.getPushStatus()
     }
 
     fun backButtonClicked(){ _navigate.value = BACK }
@@ -32,7 +32,7 @@ class SettingViewModel(private val boardRepository: BoardRepository): ViewModel(
 
     fun togglePushAlarm(){
         _isPushAlarm.value?.let {
-            boardRepository.setPushStatus(!it)
+            messaging.setPushStatus(!it)
             _isPushAlarm.value = !it
         }
     }
