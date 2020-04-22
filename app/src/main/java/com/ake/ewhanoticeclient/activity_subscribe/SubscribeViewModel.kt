@@ -37,7 +37,6 @@ class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() 
     private fun initBoards() {
         viewModelScope.launch {
             _subscribedBoards.value = repository.getSubscribedBoardList()
-            // TODO dispatch
             allBoards = repository.getBoardsFromDatabase().asDomainModel()
             _bottomBoards.value = allBoards
         }
@@ -94,7 +93,6 @@ class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() 
     private fun subscribeBoards() {
         val firebaseMessaging = FirebaseMessaging.getInstance()
         viewModelScope.launch {
-            //TODO dispatch
             for (topic in repository.getAllTopics())
                 firebaseMessaging.unsubscribeFromTopic(topic)
             for (board in _subscribedBoards.value!!)

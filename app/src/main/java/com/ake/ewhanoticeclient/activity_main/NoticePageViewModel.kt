@@ -1,6 +1,7 @@
 package com.ake.ewhanoticeclient.activity_main
 
 import android.app.Application
+import android.view.View
 import androidx.lifecycle.*
 import androidx.paging.PagedList
 import com.ake.ewhanoticeclient.database.NoticeDatabase
@@ -9,6 +10,7 @@ import com.ake.ewhanoticeclient.domain.Notice
 import com.ake.ewhanoticeclient.network.NoticeNetwork
 import com.ake.ewhanoticeclient.repositories.NoticesRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
@@ -21,6 +23,10 @@ class NoticePageViewModel(
         NoticeDatabase.getInstance(application))
 
     var notices: LiveData<PagedList<Notice>> = noticeRepository.notices
+
+    private val _initialLoading = MutableLiveData<Boolean>()
+    val initialLoading = Transformations.map(_initialLoading){
+        if (it) View.VISIBLE else View.INVISIBLE }
 
     private var _url = MutableLiveData<String?>()
     val url: LiveData<String?>
@@ -43,7 +49,17 @@ class NoticePageViewModel(
         _expandBoard.value = null
         _toast.value = null
         _isRefreshing.value = false
-        refreshNotice()
+        _initialLoading.value = true
+        viewModelScope.launch {
+            withContext(Dispatchers.Default){
+                delay(200)
+            }
+            refreshNotice()
+            withContext(Dispatchers.Default){
+                delay(200)
+            }
+            _initialLoading.value = false
+        }
     }
 
     fun showNotice(notice: Notice) {

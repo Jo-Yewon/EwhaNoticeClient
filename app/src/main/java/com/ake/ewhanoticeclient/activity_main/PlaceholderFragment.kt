@@ -14,7 +14,10 @@ import com.ake.ewhanoticeclient.databinding.FragmentNoticesBinding
 import android.content.Intent
 import android.webkit.URLUtil
 import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ake.ewhanoticeclient.domain.Board
 
 

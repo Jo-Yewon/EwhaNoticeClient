@@ -5,6 +5,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.paging.PagedList
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ake.ewhanoticeclient.domain.Notice
 import java.text.SimpleDateFormat
@@ -58,4 +59,8 @@ fun TextView.setIsNewOne(item: Notice) {
 fun bindNoticesRecyclerView(recyclerView: RecyclerView, data: PagedList<Notice>?){
     val adapter = recyclerView.adapter as NoticesAdapter
     adapter.submitList(data)
+    data?.let {
+        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+        layoutManager.scrollToPositionWithOffset(0, 0)
+    }
 }

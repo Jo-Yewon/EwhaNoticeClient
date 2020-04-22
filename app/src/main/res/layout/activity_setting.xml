@@ -83,12 +83,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/setting_subscribe_board_title"
-                        android:textSize="16sp"
-                        android:textStyle="bold"/>
+                        style="@style/setting_subtitle" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        style="@style/setting_description"
                         android:text="@string/setting_subscribe_board_desc"/>
                 </LinearLayout>
 
@@ -114,12 +114,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/setting_push_title"
-                            android:textSize="16sp"
-                            android:textStyle="bold"/>
+                            style="@style/setting_subtitle"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            style="@style/setting_description"
                             android:text="@string/setting_push_desc"/>
                     </LinearLayout>
 
@@ -176,12 +176,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/check_source"
-                        android:textSize="16sp"
-                        android:textStyle="bold"/>
+                        style="@style/setting_subtitle"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        style="@style/setting_description"
                         android:text="@string/move_to_github"/>
 
                 </LinearLayout>
@@ -198,12 +198,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/report"
-                        android:textSize="16sp"
-                        android:textStyle="bold"/>
+                        style="@style/setting_subtitle"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        style="@style/setting_description"
                         android:text="@string/report_desc"/>
                 </LinearLayout>
 

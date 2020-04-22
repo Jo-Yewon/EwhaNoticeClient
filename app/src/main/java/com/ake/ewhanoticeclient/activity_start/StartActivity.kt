@@ -38,11 +38,11 @@ class StartActivity : AppCompatActivity() {
                 updatedSubscribedBoards.add(
                     if (board.boardId == 2153220 && board.alias == "화생분공지") {
                         needUpdate = true
-                        Board(2153220, "Nature",
+                        Board(2153220, "Nature", "자연과학대학",
                             "화학나노과학과공지사항", "화학나노과학공지")
                     } else if (board.boardId == 2153221 && board.alias == "화생분채용") {
                         needUpdate = true
-                        Board(2153221, "Nature",
+                        Board(2153221, "Nature", "자연과학대학",
                             "화학나노과학과채용정보", "화학나노과학채용")
                     } else board
                 )

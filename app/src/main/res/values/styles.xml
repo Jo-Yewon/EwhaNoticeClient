@@ -7,7 +7,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
     <style name="AppSearchView" parent="Widget.AppCompat.SearchView" >
         <item name="android:textSize">12sp</item>
@@ -19,6 +19,14 @@
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="setting_subtitle" parent="setting_description">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="setting_description">
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="item_wrap">

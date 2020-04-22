@@ -31,10 +31,9 @@ class BoardRepository(
         private const val KEY = "subscription"
     }
 
-    // for legacy
     private fun getBoardFromString(boardString: String): Board{
         val st = StringTokenizer(boardString, ",")
-        return Board(Integer.parseInt(st.nextToken()), st.nextToken(), st.nextToken(), st.nextToken())
+        return Board(Integer.parseInt(st.nextToken()), st.nextToken(), "", st.nextToken(), st.nextToken())
     }
 
     fun setSubscribedBoardList(boards: List<Board>) {

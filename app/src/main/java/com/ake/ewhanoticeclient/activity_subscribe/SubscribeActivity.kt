@@ -3,11 +3,13 @@ package com.ake.ewhanoticeclient.activity_subscribe
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.LinearLayout
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ake.ewhanoticeclient.R
 import com.ake.ewhanoticeclient.activity_main.MainActivity
 import com.ake.ewhanoticeclient.database.BoardDatabase
@@ -34,10 +36,14 @@ class SubscribeActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         // SubscribedBoardList
+        val layoutManager = LinearLayoutManager(this).apply{
+            orientation = LinearLayoutManager.HORIZONTAL
+        }
         val subscribedBoardsListAdapter = SubscribedBoardsAdapter(
             BoardClickListener { board ->
                 viewModel.unsubscribeBoard(board)
             })
+        binding.subscribedBoardList.layoutManager = layoutManager
         binding.subscribedBoardList.adapter = subscribedBoardsListAdapter
 
         // BoardList

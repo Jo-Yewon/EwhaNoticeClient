@@ -7,6 +7,7 @@ import kotlinx.android.parcel.Parcelize
 data class Board(
     val boardId: Int,
     val boardCategory: String,
+    val boardCategoryKorean: String,
     val title: String,
     val alias: String
 ):Comparable<Board>, Parcelable{
