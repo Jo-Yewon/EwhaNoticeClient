@@ -1,11 +1,7 @@
 package com.ake.ewhanoticeclient.database
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.room.Dao
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface BoardDatabaseDao{
@@ -20,6 +16,9 @@ interface BoardDatabaseDao{
 
     @Query("select distinct board_category from board_table")
     fun getAllTopics(): List<String>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertBoard(board:DatabaseBoard)
 }
 
 @Database(entities = [DatabaseBoard::class], version = 5, exportSchema = false)
