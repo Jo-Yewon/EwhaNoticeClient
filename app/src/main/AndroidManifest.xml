@@ -25,13 +25,8 @@
             android:value="@string/default_notification_channel_id" />
 
         <activity
-            android:name=".activity_setting.SettingsActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_settings"
-            android:noHistory="true">
-        </activity>
-        <activity
             android:name=".activity_start.StartActivity"
+            android:theme="@style/SplashTheme"
             android:screenOrientation="portrait"
             android:noHistory="true">
             <intent-filter>
