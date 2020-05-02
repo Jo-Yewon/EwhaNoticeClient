@@ -43,18 +43,19 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation "androidx.viewpager2:viewpager2:1.0.0"
-
-    // Testing
     implementation 'androidx.preference:preference:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+
+    // Testing
     testImplementation 'junit:junit:4.13'
     testImplementation "androidx.room:room-testing:$room_version"
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     androidTestImplementation "androidx.arch.core:core-testing:2.0.0"
+    testImplementation 'org.mockito:mockito-core:2.19.0'
+    testImplementation 'org.powermock:powermock-module-junit4:2.0.4'
+    testImplementation 'org.powermock:powermock-api-mockito2:2.0.4'
 
     // Firebase messaging
     implementation 'com.google.firebase:firebase-messaging:20.1.0'
