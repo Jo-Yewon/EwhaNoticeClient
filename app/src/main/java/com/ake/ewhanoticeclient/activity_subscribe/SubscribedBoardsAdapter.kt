@@ -13,9 +13,7 @@ class SubscribedBoardsAdapter(private val clickListener: BoardClickListener) :
     ListAdapter<Board, SubscribedBoardsAdapter.SubscribedBoardViewHolder>(SubscribedBoardDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubscribedBoardViewHolder =
-        SubscribedBoardViewHolder.from(
-            parent
-        )
+        SubscribedBoardViewHolder.from(parent)
 
     override fun onBindViewHolder(holder: SubscribedBoardViewHolder, position: Int) {
         val res = holder.itemView.context.resources

@@ -7,7 +7,6 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ake.ewhanoticeclient.domain.Board
-import kotlin.random.Random
 
 @BindingAdapter("boardCategoryAndTitle")
 fun TextView.setBoardCategoryAndTitle(item: Board){

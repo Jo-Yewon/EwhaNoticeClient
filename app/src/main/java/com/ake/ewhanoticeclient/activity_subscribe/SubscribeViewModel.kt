@@ -1,17 +1,16 @@
 package com.ake.ewhanoticeclient.activity_subscribe
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.*
 import com.ake.ewhanoticeclient.database.asDomainModel
 import com.ake.ewhanoticeclient.domain.Board
 import com.ake.ewhanoticeclient.repositories.BoardRepository
-import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
 
-class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() {
+class SubscribeViewModel(
+    private val boardRepository: BoardRepository) : ViewModel() {
 
-    private var _subscribedBoards = MutableLiveData<List<Board>>()
+    private val _subscribedBoards = MutableLiveData(boardRepository.getSubscribedBoardList())
     val subscribedBoards: LiveData<List<Board>>
         get() = _subscribedBoards
 
@@ -23,81 +22,47 @@ class SubscribeViewModel(private val repository: BoardRepository) : ViewModel() 
         if (it.isEmpty()) View.GONE else View.VISIBLE
     }
 
-    private val _navigateToMainActivity = MutableLiveData<Boolean>()
-    val navigateToMainActivity: LiveData<Boolean>
-        get() = _navigateToMainActivity
-
-    private lateinit var allBoards: List<Board>
+    private val _endActivity = MutableLiveData<Boolean>()
+    val endActivity: LiveData<Boolean>
+        get() = _endActivity
 
     init {
-        _navigateToMainActivity.value = false
-        initBoards()
-    }
-
-    private fun initBoards() {
-        viewModelScope.launch {
-            _subscribedBoards.value = repository.getSubscribedBoardList()
-            allBoards = repository.getBoardsFromDatabase().asDomainModel()
-            _bottomBoards.value = allBoards
-        }
+        _endActivity.value = false
+        resetSearch()
     }
 
     fun unsubscribeBoard(board: Board) {
-        val subscribedBoards = (_subscribedBoards.value as MutableList).toMutableList()
-        for (i in 0 until subscribedBoards.size)
-            if (subscribedBoards[i].boardId == board.boardId) {
-                subscribedBoards.removeAt(i)
-                break
-            }
-        _subscribedBoards.value = subscribedBoards
+        val subscribedBoards = _subscribedBoards.value ?: return
+        if (board.boardId in subscribedBoards.map { it.boardId })
+            _subscribedBoards.value = subscribedBoards.filter { it.boardId != board.boardId }
     }
 
     fun subscribeBoard(board: Board) {
-        when (_subscribedBoards.value?.size) {
-            0 -> _subscribedBoards.value = mutableListOf(board)
-            5 -> {
-                //TODO 5개 이상 구독할 수 없다고 알려주어야 해요
-                Log.d("subscribe", "wait")
+        val subscribedBoards = _subscribedBoards.value ?: return
+        if (subscribedBoards.size < 5 && board.boardId !in subscribedBoards.map { it.boardId })
+            _subscribedBoards.value = subscribedBoards.toMutableList().apply {
+                add(board)
             }
-            else -> {
-                val subscribedBoards = (_subscribedBoards.value as MutableList).toMutableList()
-                for (existedBoard in subscribedBoards)
-                    if (existedBoard.boardId == board.boardId) {
-                        //TODO 이미 구독된 게시판이라고 알려주어야 해요
-                        return
-                    }
-                subscribedBoards.add(board)
-                _subscribedBoards.value = subscribedBoards
-            }
-        }
     }
 
     fun searchBoardByKeyword(keyword: String?) {
         viewModelScope.launch {
             when (keyword) {
                 null -> resetSearch()
-                else -> _bottomBoards.value = repository.searchBoardsFromDatabase(keyword).asDomainModel()
+                else -> _bottomBoards.value = boardRepository.searchBoardsFromDatabase(keyword).asDomainModel()
             }
         }
     }
 
     fun resetSearch() {
-        _bottomBoards.value = allBoards
-    }
-
-    fun clickConfirm() {
-        subscribeBoards()
-        _navigateToMainActivity.value = true
-    }
-
-    private fun subscribeBoards() {
-        val firebaseMessaging = FirebaseMessaging.getInstance()
         viewModelScope.launch {
-            for (topic in repository.getAllTopics())
-                firebaseMessaging.unsubscribeFromTopic(topic)
-            for (board in _subscribedBoards.value!!)
-                firebaseMessaging.subscribeToTopic(board.boardCategory)
+            _bottomBoards.value = boardRepository.getBoardsFromDatabase().asDomainModel()
         }
-        repository.setSubscribedBoardList(_subscribedBoards.value!!)
+    }
+
+    fun confirmSubscribe() {
+        val boards = _subscribedBoards.value ?: return
+        boardRepository.subscribeBoards(boards)
+        _endActivity.value = true
     }
 }

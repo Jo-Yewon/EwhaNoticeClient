@@ -58,7 +58,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     visibilityAnim="@{viewModel.isSubscribedBoard}"
-                    android:onClick="@{() -> viewModel.clickConfirm()}">
+                    android:onClick="@{() -> viewModel.confirmSubscribe()}">
                 </Button>
             </LinearLayout>
         </androidx.cardview.widget.CardView>

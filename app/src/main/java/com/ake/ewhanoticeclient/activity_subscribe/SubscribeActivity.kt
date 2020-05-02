@@ -3,7 +3,6 @@ package com.ake.ewhanoticeclient.activity_subscribe
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.LinearLayout
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -62,8 +61,7 @@ class SubscribeActivity : AppCompatActivity() {
             }
         }
 
-        // Navigate
-        viewModel.navigateToMainActivity.observe(this, Observer {
+        viewModel.endActivity.observe(this, Observer {
             if (it){ startActivity(Intent(this, MainActivity::class.java)) }
         })
     }

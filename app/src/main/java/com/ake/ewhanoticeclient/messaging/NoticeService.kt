@@ -17,14 +17,15 @@ import com.google.firebase.messaging.RemoteMessage
 import java.util.*
 
 
-class NoticeService : FirebaseMessagingService() {
+class NoticeService : FirebaseMessagingService(){
+
     override fun onMessageReceived(message: RemoteMessage) {
         val sharedPreferences =
             getSharedPreferences(BoardRepository.PREFERENCES_NAME, Context.MODE_PRIVATE)
         val dao = BoardDatabase.getInstance(application).boardDatabaseDao
-        val boardRepository = BoardRepository(dao, sharedPreferences)
+        val boardRepository = BoardRepository.getInstance(dao, sharedPreferences)
 
-        if (Messaging(sharedPreferences).getPushStatus()) {  // Check push-on
+        if (PushManager(sharedPreferences).getPushStatus()) {  // Check push-on
             try {
                 // Check subscribed notice
                 val notices = message.data

@@ -2,7 +2,6 @@ package com.ake.ewhanoticeclient.network
 
 import com.ake.ewhanoticeclient.database.DatabaseNotice
 import com.google.gson.annotations.SerializedName
-import java.util.regex.Pattern
 
 data class NetworkNotice(
     val num: Int,
