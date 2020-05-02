@@ -3,6 +3,4 @@
     <dimen name="appbar_padding">16dp</dimen>
     <dimen name="small_text">10sp</dimen>
     <dimen name="medium_text">13sp</dimen>
-    <dimen name="icon_margin">20dp</dimen>
-    <dimen name="setting_margin">20dp</dimen>
 </resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group>
+        <item
+            android:id="@+id/subscribe"
+            android:title="@string/setting_subscribe_board_title" />
+        <item
+            android:id="@+id/pushSwitch"
+            android:title="@string/setting_push_title"
+            app:actionLayout="@layout/switch_item"
+            app:showAsAction="always" />
+    </group>
+    <group>
+        <item
+            android:id="@+id/license"
+            android:title="@string/check_source" />
+        <item
+            android:id="@+id/report"
+            android:title="@string/report" />
+    </group>
+</menu>

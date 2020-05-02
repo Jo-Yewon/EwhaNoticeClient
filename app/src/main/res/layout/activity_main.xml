@@ -3,77 +3,68 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="viewModel"
-            type="com.ake.ewhanoticeclient.activity_main.MainViewModel" />
-    </data>
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        android:fitsSystemWindows="true"
+        tools:openDrawer="start">
 
-        <com.google.android.material.appbar.AppBarLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:layout_height="match_parent"
+            tools:context=".MainActivity">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize">
-
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:minHeight="?actionBarSize"
-                    android:padding="@dimen/appbar_padding"
-                    android:text="@string/app_name"
-                    android:textColor="@color/colorAccentLight"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/imageButton"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_chainStyle="spread_inside"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageButton
-                    android:id="@+id/imageButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/icon_margin"
-                    android:background="@drawable/setting"
-                    android:onClick="@{() -> viewModel.clickSetting()}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/title"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:contentDescription="@string/setting_button"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabs"
-                app:tabTextColor="@color/tab_color_selector"
+            <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/colorPrimary" />
+                android:theme="@style/AppTheme.AppBarOverlay">
 
-        </com.google.android.material.appbar.AppBarLayout>
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize">
+
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:minHeight="?actionBarSize"
+                        android:padding="@dimen/appbar_padding"
+                        android:text="@string/app_name"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                        android:textColor="@color/colorAccentLight" />
+                </androidx.appcompat.widget.Toolbar>
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/colorPrimary"
+                    app:tabTextColor="@color/tab_color_selector" />
+
+            </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_constraintBottom_toTopOf="parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <include
+            android:id="@+id/navViewOut"
+            layout="@layout/main_navi"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.drawerlayout.widget.DrawerLayout>
 </layout>
