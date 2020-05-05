@@ -18,10 +18,13 @@ import com.ake.ewhanoticeclient.repositories.BoardRepository
 import com.ake.ewhanoticeclient.databinding.ActivityMainBinding
 import com.ake.ewhanoticeclient.messaging.PushManager
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.android.synthetic.main.switch_item.view.*
 
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
+
     lateinit var binding: ActivityMainBinding
 
     interface CommonBoardFragment {
@@ -45,6 +48,8 @@ class MainActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         initToolbar()
         initTabViewPager()

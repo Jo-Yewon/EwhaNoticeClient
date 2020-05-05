@@ -14,14 +14,18 @@ import com.ake.ewhanoticeclient.activity_main.MainActivity
 import com.ake.ewhanoticeclient.database.BoardDatabase
 import com.ake.ewhanoticeclient.repositories.BoardRepository
 import com.ake.ewhanoticeclient.databinding.ActivitySubscribeBinding
+import com.google.firebase.analytics.FirebaseAnalytics
 
 class SubscribeActivity : AppCompatActivity() {
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
 
     lateinit var binding: ActivitySubscribeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_subscribe)
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         val dao = BoardDatabase.getInstance(application).boardDatabaseDao
         val sharedPreferences = getSharedPreferences(
