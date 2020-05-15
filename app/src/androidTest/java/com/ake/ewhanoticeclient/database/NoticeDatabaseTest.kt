@@ -88,6 +88,39 @@ class NoticeDatabaseTest {
         }
     }
 
+    @Test
+    @Throws(Exception::class)
+    fun saveNotice_InvalidNumNotices_DeletedOutDatedNotices(){
+        db.clearAllTables()
+
+        val notice1 = DatabaseNotice(
+            1, 1, "test1",
+            "cate1", "2020-03-22", "url1")
+        val notice2 = DatabaseNotice(
+            1, 2, "test2",
+            "cate2", "2020-04-22", "url2")
+        val notice3 = DatabaseNotice(
+            1, 3, "test3",
+            "cate3", "2020-04-22", "url3")
+
+        noticeDao.insertNotices(listOf(notice1, notice2, notice3))
+        noticeDao.deleteNotices(1, 2)
+
+        val factory = noticeDao.getNotices(1)
+        val pagedNotices = LivePagedListBuilder(factory, 10).build()
+        pagedNotices.observeForever {
+            assertEquals(it.size, 2)
+            if (it[0] != null) {
+                assertEquals(it[0]!!.title, notice2.title)
+                assertEquals(it[0]!!.num, notice2.num)
+            }
+            if (it[1] != null) {
+                assertEquals(it[1]!!.title, notice1.title)
+                assertEquals(it[1]!!.num, notice1.num)
+            }
+        }
+    }
+
     @After
     @Throws(IOException::class)
     fun closeDB() {
