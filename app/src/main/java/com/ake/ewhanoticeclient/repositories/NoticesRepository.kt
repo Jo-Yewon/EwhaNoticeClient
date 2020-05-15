@@ -21,8 +21,10 @@ class NoticesRepository(
 
     suspend fun refreshNotices(){
         withContext(Dispatchers.IO){
-            val updatedNotices = NoticeNetwork.noticeNetwork.getNotices(boardId)
-            database.noticeDatabaseDao.insertNotices(updatedNotices.asDatabaseModel(boardId))
+            val updatedNotices = NoticeNetwork.noticeNetwork.getNotices(boardId).asDatabaseModel(boardId)
+            val latest = updatedNotices.map { it.num }.max()
+            database.noticeDatabaseDao.insertNotices(updatedNotices)
+            if (latest != null) database.noticeDatabaseDao.deleteNotices(boardId, latest)
         }
     }
 }

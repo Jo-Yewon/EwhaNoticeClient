@@ -11,6 +11,9 @@ interface NoticeDatabaseDao{
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertNotices(notices:List<DatabaseNotice>)
+
+    @Query("delete from notice_table where boardId == :boardId and num > :latest")
+    fun deleteNotices(boardId: Int, latest: Int)
 }
 
 @Database(entities = [DatabaseNotice::class], version = 1, exportSchema = false)
